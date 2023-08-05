@@ -10,7 +10,7 @@ const useFetch = (url) => {
       const incomingData = await res.json();
       setData(incomingData?.Book?.volumeInfo);
       setIsLoading(false);
-      // console.log(incomingData);
+      console.log(incomingData);
     } catch (error) {
       console.log(error);
     }

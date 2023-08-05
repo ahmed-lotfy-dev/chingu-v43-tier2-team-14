@@ -1,12 +1,17 @@
 import { Toaster } from "react-hot-toast";
 import useWishlist from "../../hooks/useWishlist";
+import { cartStore } from "../../features/cartStore";
+
 import {
   BsBookmarkPlus,
   BsBookmarkDashFill,
+  BsCartXFill,
   BsCartPlusFill,
 } from "react-icons/bs";
 
 import GenericBtns from "../UI/GenericBtns";
+import useCart from "../../hooks/useCart";
+
 const BookBody = ({
   id,
   singleBook: {
@@ -19,15 +24,17 @@ const BookBody = ({
   },
 }) => {
   const { addItemToWishlist, isAdded } = useWishlist(id, title);
-  // const {addItemToCart,isOnCart} = useCart(id,title)
+  const { addItemToCart, isInCart } = useCart(id, title);
+
   const item = {
     id,
     title,
     categories,
     pageCount,
-    imageLinks,
+    image: imageLinks.thumbnail,
     description,
-    authors,
+    author: authors[0],
+    // price: saleInfo.amount,
   };
   return (
     <article className="flex flex-col space-y-4">
@@ -58,13 +65,14 @@ const BookBody = ({
         </span>
       )}
 
-      <div className="flex justify-between pt-16">
+      <div
+        className="flex justify-between pt-16"
+        onClick={() => addItemToCart(item)}
+      >
         <GenericBtns
           title="add to cart"
-          icon={<BsCartPlusFill />}
-          onClick={() => {
-            addItemToCart(item);
-          }}
+          // icon={<BsCartPlusFill />}
+          icon={!isInCart ? <BsCartPlusFill /> : <BsCartXFill />}
         />
         <div className="flex items-center space-x-4">
           <div
