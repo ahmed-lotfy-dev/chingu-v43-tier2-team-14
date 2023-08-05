@@ -8,6 +8,7 @@ const UserSchema = Schema({
   provider: String,
   books: [{ type: Schema.Types.ObjectId, ref: 'Book' }],
   cart: [{ type: Schema.Types.ObjectId, ref: 'Cart' }],
+  order: [{ type: Schema.Types.ObjectId, ref: 'Order' }],
 }, { timestamps: true })
 
 const User = model('User', UserSchema)

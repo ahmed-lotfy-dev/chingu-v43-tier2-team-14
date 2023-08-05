@@ -2,8 +2,8 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import axios from "axios";
 
-const store = create({
-  cart: null,
+const store = (set) => ({
+  cart: [],
   getCart: async (userId) => {
     const response = await axios.get(
       `${import.meta.env.VITE_BACKEND_URL}/api/cart/get-cart-items`,
@@ -13,25 +13,32 @@ const store = create({
     );
     set({ cart: response });
   },
-  addItemToCartState: (item) => {
-    set((state)=>{
-      const cartItemExist = state.cart.find(item.id)
-    })
-  },
+
+  addItemToCartState: (item) =>
+    set((state) => {
+      const cartItemExist = state.cart.some(
+        (cartItem) => cartItem.id === item.id
+      );
+      if (!cartItemExist) {
+        return {
+          cart: [...state.cart, item],
+        };
+      }
+      return state;
+    }),
 
   removeItemFromCartState: async (item) => {
-    set({ ...cart, item });
+    set((state) => {
+      return { ...state.cart, item };
+    });
   },
 
-  addCartDB: async (userId, cart) => {
+  addCartDB: async function (userId, item) {
     const response = await axios.post(
       `${import.meta.env.VITE_BACKEND_URL}/api/cart/add-item-to-cart`,
-      {
-        userId: userId,
-        item: item,
-      }
+      { userId: userId, item }
     );
-    set({ ...cart, response });
+    set((state) => ({ ...state.cart, response }));
   },
 
   removeCartDB: async (userId) => {

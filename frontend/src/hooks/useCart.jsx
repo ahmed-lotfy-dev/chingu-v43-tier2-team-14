@@ -3,17 +3,17 @@ import { userStore } from "../features/userStore";
 import { cartStore } from "../features/cartStore";
 import toast from "react-hot-toast";
 
-const useCart = (id, title,image,price,author) => {
+const useCart = (id, title, image, price, author) => {
   const user = userStore((state) => state.user);
   const cart = cartStore((state) => state.cart);
-  const addItemToCartState = cartStore((state) => state.addItemToCart);
+  const addItemToCartState = cartStore((state) => state.addItemToCartState);
   const removeItemFromCartState = cartStore(
-    (state) => state.removeItemFromCart
+    (state) => state.removeItemFromCartState
   );
   const addCartDB = cartStore((state) => state.addCartDB);
-
+  const removeCartDB = cartStore((state) => state.removeCartDB);
   const isOnCart = (id) => cart.find((item) => item.id === id);
-  const [isAdded, setIsAdded] = useState(isOnCart(id));
+  const [isInCart, setIsInCart] = useState(isOnCart(id));
 
   const alertAdd = (title) => {
     toast.success(`${title} Added to Cart`, {
@@ -28,27 +28,30 @@ const useCart = (id, title,image,price,author) => {
   };
 
   const noUser = () => {
-    toast.error(`Sorry you have to sign in`, {
+    toast.error(`Sorry You Have To Be Signed In First`, {
       position: "top-right",
     });
   };
 
   const addItemToCart = (item) => {
-    if (!user) noUser();
+    if (!user) {
+      noUser();
+      return;
+    }
     if (!isOnCart(id)) {
-      addToWishlist(item);
-      user && addBookDb(user._id, item);
+      addItemToCartState(item);
+      addCartDB(user._id, item);
       alertAdd(title);
-      setIsAdded(!isAdded);
+      setIsInCart(!isInCart);
     } else {
-      removeFromWishlist(id);
-      user && removeBookDb(user._id, id);
+      removeItemFromCartState(id);
+      removeCartDB(user._id, id);
       alertRemove(title);
-      setIsAdded(!isAdded);
+      setIsInCart(!isInCart);
     }
   };
 
-  return { addItemToCart, isAdded };
+  return { addItemToCart, isInCart };
 };
 
 export default useCart;

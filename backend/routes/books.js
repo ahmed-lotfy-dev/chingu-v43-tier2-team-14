@@ -27,6 +27,8 @@ router.get('/single-book/:title', async (req, res, next) => {
     const apiKey = GOOGLE_BOOKAPI
     const response = await fetch(`${url}?q=${title}&maxResults=1&key=${apiKey}`)
     const data = await response.json()
+    console.log(data);
+
     console.log("from inside singlebook title")
     res.status(200).json({ singleBook: data })
   } catch (error) {

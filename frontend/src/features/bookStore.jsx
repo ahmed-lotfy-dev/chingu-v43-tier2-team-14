@@ -81,7 +81,7 @@ const store = (set) => ({
       const url = `${import.meta.env.VITE_BACKEND_URL}/api/books/remove-book`;
       fetch(url, {
         method: "delete",
-        body:   ify({ userId, id }),
+        body: JSON.stringify({ userId, id }),
         headers: {
           "Content-Type": "application/json",
         },
