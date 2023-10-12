@@ -20,6 +20,6 @@ export default defineConfig({
     }),
   ],
   define: {
-    __BACKEND_URL__: `"${process.env.BACKEND_URL}"`, // wrapping in "" since it's a string
+    "process.env": process.env,
   },
 });
