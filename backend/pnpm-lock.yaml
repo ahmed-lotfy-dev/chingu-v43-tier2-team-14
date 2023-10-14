@@ -6,13 +6,13 @@ settings:
 
 dependencies:
   connect-mongo:
-    specifier: ^5.0.0
-    version: 5.0.0(express-session@1.17.3)(mongodb@5.9.0)
+    specifier: ^5.1.0
+    version: 5.1.0(express-session@1.17.3)(mongodb@5.9.0)
   cors:
     specifier: ^2.8.5
     version: 2.8.5
   dotenv:
-    specifier: ^16.0.3
+    specifier: ^16.3.1
     version: 16.3.1
   express:
     specifier: ^4.18.2
@@ -21,17 +21,17 @@ dependencies:
     specifier: ^1.17.3
     version: 1.17.3
   helmet:
-    specifier: ^6.0.1
-    version: 6.2.0
+    specifier: ^7.0.0
+    version: 7.0.0
   mongoose:
-    specifier: ^7.0.3
-    version: 7.6.1
+    specifier: ^7.6.2
+    version: 7.6.2
   node-fetch:
-    specifier: ^3.3.1
+    specifier: ^3.3.2
     version: 3.3.2
   nodemon:
-    specifier: ^2.0.22
-    version: 2.0.22
+    specifier: ^3.0.1
+    version: 3.0.1
   passport:
     specifier: ^0.6.0
     version: 0.6.0
@@ -187,12 +187,12 @@ packages:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: false
 
-  /connect-mongo@5.0.0(express-session@1.17.3)(mongodb@5.9.0):
-    resolution: {integrity: sha512-s93jiP6GkRApn5duComx6RLwtP23YrulPxShz+8peX7svd6Q+MS8nKLhKCCazbP92C13eTVaIOxgeLt0ezIiCg==}
+  /connect-mongo@5.1.0(express-session@1.17.3)(mongodb@5.9.0):
+    resolution: {integrity: sha512-xT0vxQLqyqoUTxPLzlP9a/u+vir0zNkhiy9uAdHjSCcUUf7TS5b55Icw8lVyYFxfemP3Mf9gdwUOgeF3cxCAhw==}
     engines: {node: '>=12.9.0'}
     peerDependencies:
       express-session: ^1.17.1
-      mongodb: ^5.1.0
+      mongodb: '>= 5.1.0 < 7'
     dependencies:
       debug: 4.3.4
       express-session: 1.17.3
@@ -459,9 +459,9 @@ packages:
     engines: {node: '>= 0.4.0'}
     dev: false
 
-  /helmet@6.2.0:
-    resolution: {integrity: sha512-DWlwuXLLqbrIOltR6tFQXShj/+7Cyp0gLi6uAb8qMdFh/YBBFbKSgQ6nbXmScYd8emMctuthmgIa7tUfo9Rtyg==}
-    engines: {node: '>=14.0.0'}
+  /helmet@7.0.0:
+    resolution: {integrity: sha512-MsIgYmdBh460ZZ8cJC81q4XJknjG567wzEmv46WOBblDb6TUd3z8/GhgmsM9pn8g2B80tAJ4m5/d3Bi1KrSUBQ==}
+    engines: {node: '>=16.0.0'}
     dev: false
 
   /http-errors@2.0.0:
@@ -533,6 +533,13 @@ packages:
     engines: {node: '>8'}
     dependencies:
       asn1.js: 5.4.1
+    dev: false
+
+  /lru-cache@6.0.0:
+    resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
+    engines: {node: '>=10'}
+    dependencies:
+      yallist: 4.0.0
     dev: false
 
   /media-typer@0.3.0:
@@ -618,8 +625,8 @@ packages:
       '@mongodb-js/saslprep': 1.1.0
     dev: false
 
-  /mongoose@7.6.1:
-    resolution: {integrity: sha512-Iflr60FL7mabBdgAtumLTwEGdZGV6IKHfF7F75En2JWpPitorwQeCFqWPcPHRnBxncKANl3gwI9nh2Yb4y3/sA==}
+  /mongoose@7.6.2:
+    resolution: {integrity: sha512-OVx6RWbfNOzBbfTvXoOkgZmaizdXDU/B/KbBjietXQoInSg/OSULjOavXJzL51XWFkbefqkOvbeE07DfvW6FkQ==}
     engines: {node: '>=14.20.1'}
     dependencies:
       bson: 5.5.0
@@ -683,9 +690,9 @@ packages:
       formdata-polyfill: 4.0.10
     dev: false
 
-  /nodemon@2.0.22:
-    resolution: {integrity: sha512-B8YqaKMmyuCO7BowF1Z1/mkPqLk6cs/l63Ojtd6otKjMx47Dq1utxfRxcavH1I7VSaL8n5BUaoutadnsX3AAVQ==}
-    engines: {node: '>=8.10.0'}
+  /nodemon@3.0.1:
+    resolution: {integrity: sha512-g9AZ7HmkhQkqXkRc20w+ZfQ73cHLbE8hnPbtaFbFtCumZsjyMhKk9LajQ07U5Ux28lvFjZ5X7HvWR1xzU8jHVw==}
+    engines: {node: '>=10'}
     hasBin: true
     dependencies:
       chokidar: 3.5.3
@@ -693,8 +700,8 @@ packages:
       ignore-by-default: 1.0.1
       minimatch: 3.1.2
       pstree.remy: 1.1.8
-      semver: 5.7.2
-      simple-update-notifier: 1.1.0
+      semver: 7.5.4
+      simple-update-notifier: 2.0.0
       supports-color: 5.5.0
       touch: 3.1.0
       undefsafe: 2.0.5
@@ -846,14 +853,12 @@ packages:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
     dev: false
 
-  /semver@5.7.2:
-    resolution: {integrity: sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==}
+  /semver@7.5.4:
+    resolution: {integrity: sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==}
+    engines: {node: '>=10'}
     hasBin: true
-    dev: false
-
-  /semver@7.0.0:
-    resolution: {integrity: sha512-+GB6zVA9LWh6zovYQLALHwv5rb2PHGlJi3lfiqIHxR0uuwCgefcOJc59v9fv1w8GbStwxuuqqAjI9NMAOOgq1A==}
-    hasBin: true
+    dependencies:
+      lru-cache: 6.0.0
     dev: false
 
   /send@0.18.0:
@@ -905,11 +910,11 @@ packages:
     resolution: {integrity: sha512-Wv6BjQ5zbhW7VFefWusVP33T/EM0vYikCaQ2qR8yULbsilAT8/wQaXvuQ3ptGLpoKx+lihJE3y2UTgKDyyNHZQ==}
     dev: false
 
-  /simple-update-notifier@1.1.0:
-    resolution: {integrity: sha512-VpsrsJSUcJEseSbMHkrsrAVSdvVS5I96Qo1QAQ4FxQ9wXFcB+pjj7FB7/us9+GcgfW4ziHtYMc1J0PLczb55mg==}
-    engines: {node: '>=8.10.0'}
+  /simple-update-notifier@2.0.0:
+    resolution: {integrity: sha512-a2B9Y0KlNXl9u/vsW6sTIu9vGEpfKu2wRV6l1H3XEas/0gUIzGzBoP/IouTcUQbm9JWZLH3COxyn03TYlFax6w==}
+    engines: {node: '>=10'}
     dependencies:
-      semver: 7.0.0
+      semver: 7.5.4
     dev: false
 
   /smart-buffer@4.2.0:
@@ -1029,4 +1034,8 @@ packages:
     dependencies:
       tr46: 3.0.0
       webidl-conversions: 7.0.0
+    dev: false
+
+  /yallist@4.0.0:
+    resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
     dev: false

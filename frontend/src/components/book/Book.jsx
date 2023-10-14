@@ -18,7 +18,7 @@ const Book = () => {
   if (isLoading) {
     return <Loading />;
   }
-  
+  console.log(import.meta.env.VITE_BACKEND_URL);
   return (
     <div className="px-8 mx-auto mb-14 lg:px-24">
       {!singleBook ? (

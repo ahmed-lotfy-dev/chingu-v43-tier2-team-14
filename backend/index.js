@@ -5,13 +5,13 @@ import passport from "passport";
 import MongoStore from "connect-mongo";
 import helmet from "helmet";
 
-import dbConnection from "./utils/db.js"
+import dbConnection from "./utils/db.js";
 
-import { PORT, SESSION_SECRET, MONGO_URI, APP_HOME } from "./utils/secrets.js"
+import { PORT, SESSION_SECRET, MONGO_URI, APP_HOME } from "./utils/secrets.js";
 
-import authRoutes from "./routes/auth.js"
-import booksRoutes from "./routes/books.js"
-import cartRoutes from "./routes/cart.js"
+import authRoutes from "./routes/auth.js";
+import booksRoutes from "./routes/books.js";
+import cartRoutes from "./routes/cart.js";
 
 const app = express();
 
@@ -19,10 +19,12 @@ const port = PORT || 4000;
 
 import "./config/passport.js";
 
-app.use(cors({
-  origin: APP_HOME,
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
 
 // Middlewares
 app.use(helmet());
@@ -46,7 +48,7 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", APP_HOME);
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader(
     "Access-Control-Allow-Headers",
@@ -62,7 +64,7 @@ app.use(passport.session());
 
 app.use("/api/books", booksRoutes);
 app.use("/auth", authRoutes);
-app.use("/api/cart", cartRoutes)
+app.use("/api/cart", cartRoutes);
 
 app.get("/api/user", (req, res, next) => {
   // res.json(req.user);
@@ -73,7 +75,6 @@ app.get("/api/user", (req, res, next) => {
 app.get("/", (req, res, next) => {
   console.log("Hello World");
   res.status(200).json("hello world");
-  
 });
 
 app.use(function (err, req, res, next) {
@@ -82,6 +83,6 @@ app.use(function (err, req, res, next) {
 });
 
 app.listen(port, () => {
-  dbConnection()
-  console.log(`SERVER HTTP server started on port ${port}`)
-})
+  dbConnection();
+  console.log(`SERVER HTTP server started on port ${port}`);
+});
