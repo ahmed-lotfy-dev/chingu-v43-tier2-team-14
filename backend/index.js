@@ -1,36 +1,65 @@
-import express from "express";
-import cors from "cors";
-import session from "express-session";
-import passport from "passport";
-import MongoStore from "connect-mongo";
-import helmet from "helmet";
+import express from "express"
+import cors from "cors"
+import session from "express-session"
+import passport from "passport"
+import MongoStore from "connect-mongo"
+import helmet from "helmet"
 
-import dbConnection from "./utils/db.js";
+import swaggerjsdoc from "swagger-jsdoc"
+import swaggerUi from "swagger-ui-express"
 
-import { PORT, SESSION_SECRET, MONGO_URI, APP_HOME } from "./utils/secrets.js";
+import dbConnection from "./utils/db.js"
 
-import authRoutes from "./routes/auth.js";
-import booksRoutes from "./routes/books.js";
-import cartRoutes from "./routes/cart.js";
+import { PORT, SESSION_SECRET, MONGO_URI, APP_HOME } from "./utils/secrets.js"
 
-const app = express();
+import authRoutes from "./routes/auth.js"
+import booksRoutes from "./routes/books.js"
+import cartRoutes from "./routes/cart.js"
 
-const port = PORT || 4000;
+const app = express()
 
-import "./config/passport.js";
+const port = PORT || 4000
+
+import "./config/passport.js"
 
 app.use(
   cors({
     origin: "*",
     credentials: true,
   })
-);
+)
 
 // Middlewares
-app.use(helmet());
-app.use(express.json());
-app.use(express.static("public", { dotfiles: "allow" }));
-app.use(express.urlencoded({ extended: true }));
+app.use(helmet())
+app.use(express.json())
+app.use(express.static("public", { dotfiles: "allow" }))
+app.use(express.urlencoded({ extended: true }))
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Books App Api Docs",
+      version: "1.0.0",
+      description: "Swagger Documentation for Books App Backend Api",
+      contact: {
+        name: "Ahmed Lotfy",
+        url: "https://ahmedlotfy.dev",
+      },
+      exposeSwaggerUI: true,
+    },
+    servers: [
+      {
+        url: "http://localhost:4000/",
+        description: "Development server",
+      },
+    ],
+  },
+  apis: ["./routes/*.js"],
+}
+
+const swaggerDocs = swaggerjsdoc(swaggerOptions)
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 // setting up session cookie with logged in user's database id
 app.use(
@@ -45,44 +74,44 @@ app.use(
       autoRemove: "native",
     }),
   })
-);
+)
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", APP_HOME);
-  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Origin", APP_HOME)
+  res.setHeader("Access-Control-Allow-Credentials", "true")
   res.setHeader(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "Authorization");
-  next();
-});
+  )
+  res.setHeader("Access-Control-Allow-Headers", "Authorization")
+  next()
+})
 
 // initializing passportjs instance with its session
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.initialize())
+app.use(passport.session())
 
-app.use("/api/books", booksRoutes);
-app.use("/auth", authRoutes);
-app.use("/api/cart", cartRoutes);
+app.use("/api/books", booksRoutes)
+app.use("/auth", authRoutes)
+app.use("/api/cart", cartRoutes)
 
 app.get("/api/user", (req, res, next) => {
   // res.json(req.user);
-  const user = req.user;
-  res.status(200).json({ user });
-});
+  const user = req.user
+  res.status(200).json({ user })
+})
 
 app.get("/", (req, res, next) => {
-  console.log("Hello World");
-  res.status(200).json("hello world");
-});
+  console.log("Hello World")
+  res.status(200).json("hello world")
+})
 
 app.use(function (err, req, res, next) {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
-});
+  console.error(err.stack)
+  res.status(500).send("Something broke!")
+})
 
 app.listen(port, () => {
-  dbConnection();
-  console.log(`SERVER HTTP server started on port ${port}`);
-});
+  dbConnection()
+  console.log(`SERVER HTTP server started on port ${port}`)
+})
