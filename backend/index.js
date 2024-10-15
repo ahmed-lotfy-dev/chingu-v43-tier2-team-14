@@ -24,7 +24,8 @@ import "./config/passport.js"
 
 app.use(
   cors({
-    origin: "https://books-app-f.ahmedlotfy.dev/",
+    origin: ["https://books-app-f.ahmedlotfy.dev/", "http://localhost:3000"],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   })
 )
