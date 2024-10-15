@@ -24,7 +24,7 @@ import "./config/passport.js"
 
 app.use(
   cors({
-    origin: "*",
+    origin: "https://books-app-f.ahmedlotfy.dev/",
     credentials: true,
   })
 )
