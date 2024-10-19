@@ -92,11 +92,11 @@ app.use((req, res, next) => {
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use("/api/books", booksRoutes)
+app.use("/books", booksRoutes)
 app.use("/auth", authRoutes)
-app.use("/api/cart", cartRoutes)
+app.use("/cart", cartRoutes)
 
-app.get("/api/user", (req, res, next) => {
+app.get("/user", (req, res, next) => {
   // res.json(req.user);
   const user = req.user
   res.status(200).json({ user })
