@@ -12,6 +12,8 @@ import dbConnection from "./utils/db.js"
 
 import { PORT, SESSION_SECRET, MONGO_URI, APP_HOME } from "./utils/secrets.js"
 
+import "./config/passport.js"
+
 import authRoutes from "./routes/auth.js"
 import booksRoutes from "./routes/books.js"
 import cartRoutes from "./routes/cart.js"
@@ -19,8 +21,6 @@ import cartRoutes from "./routes/cart.js"
 const app = express()
 
 const port = PORT || 4000
-
-import "./config/passport.js"
 
 app.use(
   cors({
