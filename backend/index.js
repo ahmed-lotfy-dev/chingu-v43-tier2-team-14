@@ -24,7 +24,7 @@ const port = PORT || 4000
 
 app.use(
   cors({
-    origin: ["http://books-app-f.ahmedlotfy.dev/", "http://localhost:3000"],
+    origin: ["http://books-app-f.ahmedlotfy.dev/","https://books-app-f.ahmedlotfy.dev", "http://localhost:3000"],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   })
