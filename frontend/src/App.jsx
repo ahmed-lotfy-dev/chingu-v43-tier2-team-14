@@ -12,7 +12,7 @@ import "./App.css"
 import FeaturedPage from "./pages/FeaturedPage"
 
 function App() {
-  console.log(process.meta.env.VITE_BACKEND_URL)
+  console.log(import.meta.env.VITE_BACKEND_URL)
   const router = createBrowserRouter([
     {
       path: "/",
