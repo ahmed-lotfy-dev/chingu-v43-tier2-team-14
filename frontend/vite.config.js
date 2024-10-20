@@ -13,4 +13,8 @@ export default defineConfig({
       include: "**/*.jsx",
     }),
   ],
+  define: {
+    "process.env": process.env,
+    "process.env.VITE_BACKEND_URL": process.env.VITE_BACKEND_URL,
+  },
 })
