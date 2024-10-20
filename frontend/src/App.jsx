@@ -1,17 +1,18 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./App.css";
-import Root from "./pages/Root";
-import Home from "./pages/Home";
-import Cart from "./pages/Cart";
-import LogIn from "./pages/LogIn";
-import Error from "./pages/Error";
-import BookDetails from "./pages/BookDetails";
-import Wishlist from "./pages/WishList";
-import Books from "./pages/Books";
-import "./App.css";
-import FeaturedPage from "./pages/FeaturedPage";
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import "./App.css"
+import Root from "./pages/Root"
+import Home from "./pages/Home"
+import Cart from "./pages/Cart"
+import LogIn from "./pages/LogIn"
+import Error from "./pages/Error"
+import BookDetails from "./pages/BookDetails"
+import Wishlist from "./pages/WishList"
+import Books from "./pages/Books"
+import "./App.css"
+import FeaturedPage from "./pages/FeaturedPage"
 
 function App() {
+  console.log(process.meta.env.VITE_BACKEND_URL)
   const router = createBrowserRouter([
     {
       path: "/",
@@ -53,9 +54,9 @@ function App() {
         },
       ],
     },
-  ]);
+  ])
 
-  return <RouterProvider router={router} />;
+  return <RouterProvider router={router} />
 }
 
-export default App;
+export default App
