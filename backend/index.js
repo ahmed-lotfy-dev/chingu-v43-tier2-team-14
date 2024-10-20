@@ -22,12 +22,14 @@ const app = express()
 
 const port = PORT || 4000
 
+const allowedOrigins =
+  process.env.NODE_ENV === "production"
+    ? ["https://books-app-f.ahmedlotfy.dev"]
+    : ["http://localhost:3000"]
+
 app.use(
   cors({
-    origin: [
-      "https://books-app-f.ahmedlotfy.dev", // Allow the production frontend
-      "http://localhost:3000", // Allow local development frontend
-    ],
+    origin: allowedOrigins,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   })
