@@ -15,6 +15,5 @@ export default defineConfig({
   ],
   define: {
     "process.env": process.env,
-    "process.env.VITE_BACKEND_URL": process.env.VITE_BACKEND_URL,
   },
 })
