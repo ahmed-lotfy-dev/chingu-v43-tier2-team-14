@@ -9,7 +9,10 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "/api": {
-        target: "http://localhost:4000",
+        target:
+          process.NODE_ENV === "development"
+            ? "http://localhost:4000"
+            : "http://books-app-b.ahmedlotfy.dev",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
