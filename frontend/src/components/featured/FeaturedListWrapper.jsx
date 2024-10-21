@@ -8,10 +8,13 @@ const FeaturedListWrapper = () => {
 
   useEffect(() => {
     getFeatured()
-    console.log(featuredList)
-  }, [])
+  }, [getFeatured]) // Ensure getFeatured is called once on mount
 
-  console.log(featuredList)
+  // Handle undefined or empty featuredList gracefully
+  if (!featuredList || Object.keys(featuredList).length === 0) {
+    return <div>Loading Featured Books...</div>
+  }
+
   return (
     <div className="w-full p-5 mb-24 md:pr-24">
       <h2 className="font-semibold text-center">
@@ -26,8 +29,7 @@ const FeaturedListWrapper = () => {
                 day: "numeric",
               }
             )
-          : "Laoading..."}
-        {featuredList.be}
+          : "Loading..."}
       </h2>
       <FeaturedBookBody />
     </div>

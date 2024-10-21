@@ -2,7 +2,6 @@ import React from "react"
 import { userStore } from "../../features/userStore"
 
 const handleLogout = () => {
-  logout
   localStorage.removeItem("isAuthenticated")
 }
 
