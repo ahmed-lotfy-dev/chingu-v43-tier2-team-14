@@ -6,7 +6,7 @@ const store = (set) => ({
   user: null,
   fetchUserData: async () => {
     const response = await axios.get(
-      `${import.meta.env.VITE_BACKEND_URL}/api/user`,
+      `/api/user`,
       { withCredentials: true }
     );
     set({ user: response.data.user });

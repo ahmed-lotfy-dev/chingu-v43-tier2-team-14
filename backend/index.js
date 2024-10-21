@@ -87,7 +87,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use("/api/books", booksRoutes)
-app.use("/auth", authRoutes)
+app.use("/api/auth", authRoutes)
 app.use("/api/cart", cartRoutes)
 
 app.get("/api/user", (req, res, next) => {

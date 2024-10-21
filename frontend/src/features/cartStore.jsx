@@ -6,7 +6,7 @@ const store = (set) => ({
   cart: [],
   getCart: async (userId) => {
     const response = await axios.get(
-      `${import.meta.env.VITE_BACKEND_URL}/api/cart/get-cart-items`,
+      `/api/cart/get-cart-items`,
       {
         userId: userId,
       }
@@ -35,7 +35,7 @@ const store = (set) => ({
 
   addCartDB: async function (userId, item) {
     const response = await axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/api/cart/add-item-to-cart`,
+      `/api/cart/add-item-to-cart`,
       { userId: userId, item }
     );
     set((state) => ({ ...state.cart, response }));
@@ -43,7 +43,7 @@ const store = (set) => ({
 
   removeCartDB: async (userId) => {
     const response = await axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/api/cart/remove-item-from-cart`,
+      `/api/cart/remove-item-from-cart`,
       {
         userId: userId,
       }

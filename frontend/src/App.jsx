@@ -12,7 +12,6 @@ import "./App.css"
 import FeaturedPage from "./pages/FeaturedPage"
 
 function App() {
-  console.log(import.meta.env.VITE_BACKEND_URL)
   const router = createBrowserRouter([
     {
       path: "/",
@@ -24,7 +23,7 @@ function App() {
           element: <Home />,
         },
         {
-          path: "/:id",
+          path: "/featured/:id",
           // element: <FeaturedSingleBook />,
           element: <FeaturedPage />,
         },
@@ -33,7 +32,7 @@ function App() {
           element: <Books />,
         },
         {
-          path: "books/:category",
+          path: "books/category/:category",
           element: <Books />,
         },
         {

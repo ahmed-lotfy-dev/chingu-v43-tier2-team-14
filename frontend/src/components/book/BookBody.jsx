@@ -1,16 +1,15 @@
-import { Toaster } from "react-hot-toast";
-import useWishlist from "../../hooks/useWishlist";
-import { cartStore } from "../../features/cartStore";
+import { Toaster } from "react-hot-toast"
+import useWishlist from "../../hooks/useWishlist"
 
 import {
   BsBookmarkPlus,
   BsBookmarkDashFill,
   BsCartXFill,
   BsCartPlusFill,
-} from "react-icons/bs";
+} from "react-icons/bs"
 
-import GenericBtns from "../UI/GenericBtns";
-import useCart from "../../hooks/useCart";
+import GenericBtns from "../UI/GenericBtns"
+import useCart from "../../hooks/useCart"
 
 const BookBody = ({
   id,
@@ -23,19 +22,19 @@ const BookBody = ({
     authors,
   },
 }) => {
-  const { addItemToWishlist, isAdded } = useWishlist(id, title);
-  const { addItemToCart, isInCart } = useCart(id, title);
+  const { addItemToWishlist, isAdded } = useWishlist(id, title)
+  const { addItemToCart, isInCart } = useCart(id, title)
 
   const item = {
     id,
     title,
     categories,
     pageCount,
-    image: imageLinks.thumbnail,
+    image: imageLinks,
     description,
     author: authors[0],
     // price: saleInfo.amount,
-  };
+  }
   return (
     <article className="flex flex-col space-y-4">
       {title && (
@@ -85,6 +84,6 @@ const BookBody = ({
       </div>
       <Toaster />
     </article>
-  );
-};
-export default BookBody;
+  )
+}
+export default BookBody

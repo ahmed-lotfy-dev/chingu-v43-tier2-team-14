@@ -16,7 +16,7 @@ const Search = () => {
   const fetchSearchResults = async () => {
     setSearchResults([]); // reset search results to an empty array
     const res = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/books/search-books/${value}`
+      `/api/books/search-books/${value}`
     );
     const data = await res.json();
     if (data && data.books) {

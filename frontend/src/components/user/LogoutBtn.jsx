@@ -1,23 +1,23 @@
-import React from "react";
-import { userStore } from "../../features/userStore";
+import React from "react"
+import { userStore } from "../../features/userStore"
 
 const handleLogout = () => {
-  logout;
-  localStorage.removeItem("isAuthenticated");
-};
+  logout
+  localStorage.removeItem("isAuthenticated")
+}
 
 const Logoutbtn = () => {
-  const logout = userStore((state) => state.logout);
+  const logout = userStore((state) => state.logout)
 
   return (
     <a
       className="flex items-center bg-bg-btn text-text-btn rounded-full px-6 py-2  hover:text-white"
-      href={`${import.meta.env.VITE_BACKEND_URL}/auth/logout`}
+      href={`/api/auth/logout`}
       onClick={handleLogout}
     >
       Logout
     </a>
-  );
-};
+  )
+}
 
-export default Logoutbtn;
+export default Logoutbtn

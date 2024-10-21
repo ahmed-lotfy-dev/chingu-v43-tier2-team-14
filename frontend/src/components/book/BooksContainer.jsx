@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import BookCard from "./BookCard";
 
 const BooksContainer = () => {
@@ -10,10 +9,8 @@ const BooksContainer = () => {
   const fetchCategory = async () => {
     const res = await fetch(
       // grid-cols-1 md:grid-cols-2 lg:grid-cols-3
-      // `${import.meta.env.VITE_BACKEND_URL}/api/books?category=${category}`
-      `${
-        import.meta.env.VITE_BACKEND_URL
-      }/api/books?category=${category}&lang=en`
+      // `/api/books?category=${category}`
+      `/api/books?category=${category}&lang=en`
     );
     const data = await res.json();
     console.log(data.categories.items);

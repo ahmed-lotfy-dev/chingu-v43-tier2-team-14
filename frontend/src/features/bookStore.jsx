@@ -8,9 +8,7 @@ const store = (set) => ({
   wishList: [],
   featuredList: [],
   getBooks: async () => {
-    const url = `${
-      import.meta.env.VITE_BACKEND_URL
-    }/api/books?category=science+fiction`;
+    const url = `/api/books?category=science+fiction`;
     // must add category name for it to work
     // "http://localhost:4000/api/books?category=science+fiction";
     // ?category=category name
@@ -32,7 +30,7 @@ const store = (set) => ({
 
   // get user wishlist part
   getUserWishlist: async () => {
-    const url = `${import.meta.env.VITE_BACKEND_URL}/api/books/get-user-books`;
+    const url = `/api/books/get-user-books`;
 
     try {
       const response = await fetch(url, {
@@ -66,7 +64,7 @@ const store = (set) => ({
     })),
 
   addBookDb: async (userId, item) => {
-    const url = `${import.meta.env.VITE_BACKEND_URL}/api/books/add-book`;
+    const url = `/api/books/add-book`;
     fetch(url, {
       method: "post",
       body: JSON.stringify({ userId: userId, ...item }),
@@ -78,7 +76,7 @@ const store = (set) => ({
 
   removeBookDb: async (userId, id) => {
     try {
-      const url = `${import.meta.env.VITE_BACKEND_URL}/api/books/remove-book`;
+      const url = `/api/books/remove-book`;
       fetch(url, {
         method: "delete",
         body: JSON.stringify({ userId, id }),
@@ -93,9 +91,7 @@ const store = (set) => ({
 
   getFeatured: async () => {
     try {
-      const url = `${
-        import.meta.env.VITE_BACKEND_URL
-      }/api/books/featured-books`;
+      const url = `/api/books/featured-books`;
 
       const response = await fetch(url, {
         method: "GET",

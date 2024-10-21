@@ -11,14 +11,12 @@ const Book = () => {
 
   const { id } = useParams();
   // const { data: singleBook, isLoading } = useFetch(`${single_book_url}${id}`);
-  const { data: singleBook, isLoading } = useFetch(`${
-    import.meta.env.VITE_BACKEND_URL
-  }/api/books/${id}
+  const { data: singleBook, isLoading } = useFetch(`/api/books/${id}
   `);
   if (isLoading) {
     return <Loading />;
   }
-  console.log(import.meta.env.VITE_BACKEND_URL);
+
   return (
     <div className="px-8 mx-auto mb-14 lg:px-24">
       {!singleBook ? (
