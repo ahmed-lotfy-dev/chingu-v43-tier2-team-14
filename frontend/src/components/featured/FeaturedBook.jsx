@@ -7,7 +7,9 @@ const FeaturedSingleBook = () => {
   const { id } = useParams()
   const [singleBook, setSingleBook] = useState(null)
   const fetchSingleBook = async () => {
-    const res = await fetch(`/api/books/single-book/${id}`)
+    const res = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/books/single-book/${id}`
+    )
     const data = await res.json()
     setSingleBook(data.singleBook.items[0])
   }

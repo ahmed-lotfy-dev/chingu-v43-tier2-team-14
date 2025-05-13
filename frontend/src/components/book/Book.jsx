@@ -1,20 +1,22 @@
-import BookBody from "./BookBody";
-import BookImage from "./BookImage";
-import { useParams } from "react-router-dom";
-import NoContent from "../NoContent";
-import useFetch from "../../hooks/useFetch";
-import Loading from "../UI/Loading";
+import BookBody from "./BookBody"
+import BookImage from "./BookImage"
+import { useParams } from "react-router-dom"
+import NoContent from "../NoContent"
+import useFetch from "../../hooks/useFetch"
+import Loading from "../UI/Loading"
 
 const Book = () => {
   // const single_book_url = `${import.meta.env.VITE_BACKEND_URL}/api/books/`;
-  const single_book_url = `https://www.googleapis.com/books/v1/volumes/`;
+  const single_book_url = `https://www.googleapis.com/books/v1/volumes/`
 
-  const { id } = useParams();
+  const { id } = useParams()
   // const { data: singleBook, isLoading } = useFetch(`${single_book_url}${id}`);
-  const { data: singleBook, isLoading } = useFetch(`/api/books/${id}
-  `);
+  const { data: singleBook, isLoading } = useFetch(`${
+    import.meta.env.VITE_BACKEND_URL
+  }/api/books/${id}
+  `)
   if (isLoading) {
-    return <Loading />;
+    return <Loading />
   }
 
   return (
@@ -28,7 +30,7 @@ const Book = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Book;
+export default Book

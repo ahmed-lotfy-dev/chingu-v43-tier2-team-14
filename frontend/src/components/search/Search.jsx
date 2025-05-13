@@ -1,41 +1,41 @@
-import SearchResults from "./SearchResults";
-import { IoSearchOutline } from "react-icons/io5";
-import { useEffect, useState } from "react";
-import useDebounce from "../../hooks/useDebounce";
+import SearchResults from "./SearchResults"
+import { IoSearchOutline } from "react-icons/io5"
+import { useEffect, useState } from "react"
+import useDebounce from "../../hooks/useDebounce"
 
 const Search = () => {
-  const [value, setValue] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const [value, setValue] = useState("")
+  const [searchResults, setSearchResults] = useState([])
 
-  const debouncedValue = useDebounce(value, 1000);
+  const debouncedValue = useDebounce(value, 1000)
 
   const clearInput = () => {
-    setValue("");
-  };
+    setValue("")
+  }
 
   const fetchSearchResults = async () => {
-    setSearchResults([]); // reset search results to an empty array
+    setSearchResults([]) // reset search results to an empty array
     const res = await fetch(
-      `/api/books/search-books/${value}`
-    );
-    const data = await res.json();
+      `${import.meta.env.VITE_BACKEND_URL}/api/books/search-books/${value}`
+    )
+    const data = await res.json()
     if (data && data.books) {
-      setSearchResults(data.books);
+      setSearchResults(data.books)
     }
-  };
+  }
 
   const handleSearchInput = async (event) => {
-    const value = event.target.value;
-    setValue(value);
-  };
+    const value = event.target.value
+    setValue(value)
+  }
 
   useEffect(() => {
-    fetchSearchResults("");
-  }, []);
+    fetchSearchResults("")
+  }, [])
 
   useEffect(() => {
-    fetchSearchResults(value);
-  }, [debouncedValue]);
+    fetchSearchResults(value)
+  }, [debouncedValue])
 
   return (
     <div className="relative flex items-center justify-start w-10/12 gap-3 mb-6 md:mb-0 md:w-3/4">
@@ -54,7 +54,7 @@ const Search = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Search;
+export default Search
