@@ -340,11 +340,11 @@ booksRouter.delete(
       const { userId, id } = req.body
       // const book = await Book.findOneAndDelete({ bookId: id, userId: userId })
       if (!book) {
-         res.status(404).json({ message: "Book not found" })
+        res.status(404).json({ message: "Book not found" })
       }
       // const user = await User.findOne({ _id: userId })
       if (!user) {
-         res.status(404).json({ message: "User not found" })
+        res.status(404).json({ message: "User not found" })
       }
       // const bookIndex = user.books.indexOf(book._id)
       // if (bookIndex === -1) {
