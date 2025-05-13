@@ -27,9 +27,11 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "@types/express": "^5.0.1",
     "@types/pg": "^8.15.1",
     "drizzle-kit": "^0.31.1",
     "swagger-jsdoc": "^6.2.8",
-    "tsx": "^4.19.4"
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
   }
 }

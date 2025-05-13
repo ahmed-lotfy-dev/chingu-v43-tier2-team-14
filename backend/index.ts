@@ -73,7 +73,7 @@ app.use("/api/user", authMiddleware, userRoutes)
 app.use("/api/books", authMiddleware, booksRoutes)
 app.use("/api/cart", authMiddleware, cartRoutes)
 
-app.get("/api/user", (req, res, next) => {
+app.get("/api/user", (req: Request, res: Response, next) => {
   // res.json(req.user);
   const user = req.user
   res.status(200).json({ user })
