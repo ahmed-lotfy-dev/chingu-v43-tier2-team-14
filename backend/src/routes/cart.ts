@@ -24,10 +24,10 @@ router.post("/add-item-to-cart", async (req, res, next) => {
   const { name, image, price, author, quantity } = item
   console.log(item)
 
-  const cartItem = await CartItem.create({
-    data: { userId, name, image, price, author, quantity },
-  })
-  console.log(cartItem)
+  // const cartItem = await CartItem.create({
+  //   data: { userId, name, image, price, author, quantity },
+  // })
+  // console.log(cartItem)
 
   console.log({ userId, item })
 })

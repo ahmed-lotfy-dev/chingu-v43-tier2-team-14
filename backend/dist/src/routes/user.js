@@ -1,11 +1,13 @@
 // src/routes/user.ts
 import { Router } from "express";
+import "../types/express"; // Import the extended Request type
 import { authMiddleware } from "../utils/authMiddleware";
-const userRoutes = Router();
-userRoutes.get("/me", authMiddleware, (req, res) => {
+const userRouter = Router();
+userRouter.get("/me", authMiddleware, (req, res) => {
     if (!req.user) {
-        return res.status(401).json({ error: "Unauthorized" });
+        res.status(401).json({ error: "Unauthorized" });
+        return;
     }
     res.json({ user: req.user });
 });
-export default userRoutes;
+export default userRouter;

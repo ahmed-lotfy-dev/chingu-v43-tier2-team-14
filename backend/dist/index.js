@@ -57,11 +57,6 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/api/user", authMiddleware, userRoutes);
 app.use("/api/books", authMiddleware, booksRoutes);
 app.use("/api/cart", authMiddleware, cartRoutes);
-app.get("/api/user", (req, res, next) => {
-    // res.json(req.user);
-    const user = req.user;
-    res.status(200).json({ user });
-});
 app.get("/", (req, res, next) => {
     console.log("Hello World");
     res.status(200).json("hello world");

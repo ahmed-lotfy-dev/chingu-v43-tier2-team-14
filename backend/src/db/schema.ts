@@ -124,7 +124,9 @@ import {
   })
 )
 
-export   {
+export type UserType = typeof user.$inferSelect;
+
+export {
   user,
   session,
   account,
@@ -134,4 +136,4 @@ export   {
   cart,
   order,
   orderCart,
-}
+};

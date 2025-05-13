@@ -1,4 +1,4 @@
-import express from "express"
+import express, { NextFunction, Request, Response } from "express"
 import cors from "cors"
 import helmet from "helmet"
 
@@ -10,9 +10,9 @@ import { auth } from "./src/utils/auth"
 
 import { PORT, APP_HOME } from "./src/utils/secrets"
 
-import userRoutes from "./src/routes/user"
-import booksRoutes from "./src/routes/books"
-import cartRoutes from "./src/routes/cart"
+import userRouter from "./src/routes/user"
+import booksRouter from "./src/routes/books"
+import cartRouter from "./src/routes/cart"
 import { authMiddleware } from "./src/utils/authMiddleware"
 
 const app = express()
@@ -69,22 +69,16 @@ const swaggerOptions = {
 const swaggerDocs = swaggerjsdoc(swaggerOptions)
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
-app.use("/api/user", authMiddleware, userRoutes)
-app.use("/api/books", authMiddleware, booksRoutes)
-app.use("/api/cart", authMiddleware, cartRoutes)
-
-app.get("/api/user", (req: Request, res: Response, next) => {
-  // res.json(req.user);
-  const user = req.user
-  res.status(200).json({ user })
-})
+app.use("/api/user", authMiddleware, userRouter)
+app.use("/api/books", authMiddleware, booksRouter)
+app.use("/api/cart", authMiddleware, cartRouter)
 
 app.get("/", (req, res, next) => {
   console.log("Hello World")
   res.status(200).json("hello world")
 })
 
-app.use(function (err, req, res, next) {
+app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
   console.error(err.stack)
   res.status(500).send("Something broke!")
 })

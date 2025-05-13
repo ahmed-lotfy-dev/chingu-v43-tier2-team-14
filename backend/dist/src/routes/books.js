@@ -1,7 +1,11 @@
-import express from "express";
+import { Router } from "express";
 import fetch from "node-fetch";
 import { GOOGLE_BOOKAPI_URL, GOOGLE_BOOKAPI, NYTIMES_BOOK_KEY, NYTIMES_BOOK_URL, } from "../utils/secrets.js";
-const router = express.Router();
+import { db } from "../db/index.js";
+import { book, user } from "../db/schema.js";
+import { eq } from "drizzle-orm";
+import { AddBook } from "../controllers/book.js";
+const booksRouter = Router();
 /**
  * @swagger
  * /api/books/featured-books:
@@ -20,13 +24,13 @@ const router = express.Router();
  *                   type: string
  *                 featuredBooks:
  *                   type: object  # Update with the appropriate schema definition */
-router.get("/featured-books", async (req, res, next) => {
+booksRouter.get("/featured-books", async (req, res) => {
     try {
         // const fetchUrl = `${NYTIMES_BOOK_URL}/lists/full-overview.json?api-key=${NYTIMES_BOOK_KEY}`
         const fetchUrl = `${NYTIMES_BOOK_URL}/lists/overview.json?api-key=${NYTIMES_BOOK_KEY}`;
         const response = await fetch(fetchUrl);
         const data = await response.json();
-        return res
+        res
             .status(200)
             .json({ message: "books fetched successfully", featuredBooks: data });
     }
@@ -57,7 +61,7 @@ router.get("/featured-books", async (req, res, next) => {
  *             schema:
  *               type: object  # Update with the appropriate schema definition
  */
-router.get("/single-book/:title", async (req, res, next) => {
+booksRouter.get("/single-book/:title", async (req, res) => {
     try {
         const { title } = req.params;
         const url = GOOGLE_BOOKAPI_URL;
@@ -69,7 +73,9 @@ router.get("/single-book/:title", async (req, res, next) => {
         res.status(200).json({ singleBook: data });
     }
     catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(400).json({
+            message: error instanceof Error ? error.message : "An unknown error occurred",
+        });
     }
 });
 /**
@@ -94,7 +100,7 @@ router.get("/single-book/:title", async (req, res, next) => {
  *             schema:
  *               type: object  # Update with the appropriate schema definition
  */
-router.get("/search-books/:query", async (req, res, next) => {
+booksRouter.get("/search-books/:query", async (req, res) => {
     try {
         const { query } = req.params;
         const url = GOOGLE_BOOKAPI_URL;
@@ -105,7 +111,9 @@ router.get("/search-books/:query", async (req, res, next) => {
         res.status(200).json({ books: data });
     }
     catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(400).json({
+            message: error instanceof Error ? error.message : "An unknown error occurred",
+        });
     }
 });
 /**
@@ -130,19 +138,29 @@ router.get("/search-books/:query", async (req, res, next) => {
  *             schema:
  *               type: object  # Update with the appropriate schema definition
  */
-router.get("/get-user-books/:userId", async (req, res, next) => {
+booksRouter.get("/get-user-books/:userId", async (req, res) => {
     try {
         const { userId } = req.params; // Retrieve userId from path parameters
-        const user = await User.findOne({ _id: userId }).populate("books");
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
+        const existedUser = await db.query.user.findFirst({
+            where: eq(user.id, userId),
+            with: {
+                userBooks: true,
+            },
+        });
+        // const user = await User.findOne({ _id: userId }).populate("books")
+        if (!existedUser) {
+            res.status(404).json({ message: "User not found" });
+            return;
         }
-        res
-            .status(200)
-            .json({ message: "User Books Fetched Successfully", books: user.books });
+        res.status(200).json({
+            message: "User Books Fetched Successfully",
+            books: existedUser.userBooks,
+        });
     }
     catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(400).json({
+            message: error instanceof Error ? error.message : "An unknown error occurred",
+        });
     }
 });
 /**
@@ -206,31 +224,41 @@ router.get("/get-user-books/:userId", async (req, res, next) => {
  *       '400':
  *         description: Bad request. Error message included in the response body.
  */
-router.post("/add-book", async (req, res, next) => {
+booksRouter.post("/add-book", async (req, res) => {
     try {
-        const { userId, id, title, categories, pageCount, imageLinks, description, authors, } = req.body;
-        const user = await User.findOne({ _id: userId });
+        const { userId, title, categories, pageCount, imageLinks, description, authors, } = req.body;
+        const user = req.user;
         if (!user)
-            return res.status(404).json({ message: "User Not Found" });
-        const isExisted = await Book.findOne({ bookId: id });
-        if (isExisted)
-            return res.status(400).json({ message: "Book Allready Existed " });
-        const book = await Book.create({
-            bookId: id,
+            res.status(404).json({ message: "User Not Found" });
+        // const isExisted = await Book.findOne({ bookId: id })
+        // if (isExisted) res.status(400).json({ message: "Book Allready Existed " })
+        const created = await AddBook({
+            userId,
             title,
             categories,
             pageCount,
             imageLinks,
             description,
             authors,
-            userId: user._id,
         });
-        user.books.push(book);
-        await user.save();
-        res.status(200).json({ message: "Book Added Successfully", book: book });
+        // const book = await Book.create({
+        //   bookId: id,
+        //   title,
+        //   categories,
+        //   pageCount,
+        //   imageLinks,
+        //   description,
+        //   authors,
+        //   userId: user._id,
+        // })
+        res
+            .status(200)
+            .json({ message: "Book Added Successfully", book: created });
     }
     catch (error) {
-        res.status(401).json({ message: error.message });
+        res.status(400).json({
+            message: error instanceof Error ? error.message : "An unknown error occurred",
+        });
         console.error(error);
     }
 });
@@ -261,29 +289,29 @@ router.post("/add-book", async (req, res, next) => {
  *       '404':
  *         description: Book or user not found
  */
-router.delete("/remove-book", async (req, res, next) => {
+booksRouter.delete("/remove-book", async (req, res) => {
     try {
         const { userId, id } = req.body;
-        const book = await Book.findOneAndDelete({ bookId: id, userId: userId });
+        // const book = await Book.findOneAndDelete({ bookId: id, userId: userId })
         if (!book) {
-            return res.status(404).json({ message: "Book not found" });
+            res.status(404).json({ message: "Book not found" });
         }
-        const user = await User.findOne({ _id: userId });
+        // const user = await User.findOne({ _id: userId })
         if (!user) {
-            return res.status(404).json({ message: "User not found" });
+            res.status(404).json({ message: "User not found" });
         }
-        const bookIndex = user.books.indexOf(book._id);
-        if (bookIndex === -1) {
-            return res
-                .status(404)
-                .json({ message: "Book not found in user's collection" });
-        }
-        user.books.splice(bookIndex, 1);
-        await user.save();
+        // const bookIndex = user.books.indexOf(book._id)
+        // if (bookIndex === -1) {
+        //    res
+        //     .status(404)
+        //     .json({ message: "Book not found in user's collection" })
+        // }
         res.status(200).json({ message: "Book deleted successfully" });
     }
     catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(400).json({
+            message: error instanceof Error ? error.message : "An unknown error occurred",
+        });
         console.error(error);
     }
 });
@@ -311,7 +339,7 @@ router.delete("/remove-book", async (req, res, next) => {
  *       '400':
  *         description: Error fetching book. Error message included in the response body.
  */
-router.get("/:id", async (req, res, next) => {
+booksRouter.get("/:id", async (req, res) => {
     try {
         const { id } = req.params;
         const url = GOOGLE_BOOKAPI_URL;
@@ -367,7 +395,7 @@ router.get("/:id", async (req, res, next) => {
  *       '400':
  *         description: Error fetching books. Error message included in the response body.
  */
-router.get("/", async (req, res, next) => {
+booksRouter.get("/", async (req, res) => {
     try {
         const url = GOOGLE_BOOKAPI_URL;
         const apiKey = GOOGLE_BOOKAPI;
@@ -397,7 +425,9 @@ router.get("/", async (req, res, next) => {
         res.status(200).json({ categories: data });
     }
     catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(400).json({
+            message: error instanceof Error ? error.message : "An unknown error occurred",
+        });
     }
 });
-export default router;
+export default booksRouter;
