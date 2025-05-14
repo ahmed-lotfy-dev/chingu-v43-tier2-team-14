@@ -2,12 +2,14 @@ import React from "react"
 import { authClient } from "../../utils/auth-client"
 
 const handleSignIn = async () => {
-  const data = await authClient.signIn.social({
-    provider: "google",
-    redirect: true,
-  })
+  window.location.href = `${import.meta.env.VITE_BACKEND_URL}/api/auth/google`
 
-  console.log(data)
+  // const data = await authClient.signIn.social({
+  //   provider: "google",
+  //   redirect: true,
+  // })
+
+  // console.log(data)
   localStorage.setItem("isAuthenticated", true)
 }
 const Loginbtn = () => {
