@@ -1,10 +1,11 @@
-import { Request, Response, NextFunction } from "express"
+import { Response, NextFunction } from "express"
 import { fromNodeHeaders } from "better-auth/node"
 import { auth } from "../utils/auth.js" // Ensure this path is correct
 import { UserType } from "../db/schema.js" // Ensure this path is correct
+import { RequestWithUser } from "../types/express.js"
 
 export async function authMiddleware(
-  req: Request,
+  req: RequestWithUser,
   res: Response,
   next: NextFunction
 ): Promise<void> {

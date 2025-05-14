@@ -1,6 +1,6 @@
 // src/routes/user.ts
 import { Router } from "express";
-import "../types/express"; // Import the extended Request type
+import "../types/express";
 import { authMiddleware } from "../utils/authMiddleware";
 const userRouter = Router();
 userRouter.get("/me", authMiddleware, (req, res) => {

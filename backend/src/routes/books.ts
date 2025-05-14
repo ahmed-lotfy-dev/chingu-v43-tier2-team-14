@@ -12,6 +12,7 @@ import { db } from "../db/index.js"
 import { book, user } from "../db/schema.js"
 import { eq } from "drizzle-orm"
 import { AddBook } from "../controllers/book.js"
+import { RequestWithUser } from "../types/express.js"
 
 const booksRouter = Router()
 
@@ -254,7 +255,7 @@ booksRouter.get(
 
 booksRouter.post(
   "/add-book",
-  async (req: Request, res: Response): Promise<void> => {
+  async (req: RequestWithUser, res: Response): Promise<void> => {
     try {
       const {
         userId,

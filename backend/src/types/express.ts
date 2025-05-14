@@ -1,5 +1,5 @@
 import type { Request } from "express"
-import { UserType } from "../src/db/schema"
+import { UserType } from "../db/schema"
 
 export interface RequestWithUser extends Request {
   user?: UserType

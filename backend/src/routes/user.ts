@@ -1,16 +1,11 @@
 // src/routes/user.ts
 import { Router } from "express"
 import "../types/express"
-import type { Request as ExpressRequest, Response } from "express"
-import type { UserType } from "../db/schema"
-import { RequestWithUser } from "../../types/express"
+import type { Request, Response } from "express"
+import { RequestWithUser } from "../types/express"
 import { authMiddleware } from "../utils/authMiddleware"
 
 const userRouter = Router()
-
-interface AuthenticatedRequest extends ExpressRequest {
-  user?: UserType
-}
 
 userRouter.get("/me", authMiddleware, (req: RequestWithUser, res: Response) => {
   if (!req.user) {
