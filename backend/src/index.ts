@@ -19,17 +19,22 @@ const app = express()
 
 const port = PORT || 4000
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://books-app-f.ahmedlotfy.dev",
-]
-
-// Configure CORS middlewar
 app.use(
   cors({
-    origin: allowedOrigins, // Replace with your frontend's origin
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // Specify allowed HTTP methods
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+    origin: function (origin, callback) {
+      const allowedOrigins = [
+        "http://localhost:3000",
+        "https://books-app-f.ahmedlotfy.dev",
+      ]
+
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true)
+      } else {
+        callback(new Error("Not allowed by CORS"))
+      }
+    },
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    credentials: true, // This is crucial for cookies
   })
 )
 
