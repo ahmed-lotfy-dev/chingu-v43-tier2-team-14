@@ -447,38 +447,36 @@ booksRouter.get("/:id", async (req: Request, res: Response) => {
  *         description: Error fetching books. Error message included in the response body.
  */
 
-booksRouter.get("/", async (req: Request, res: Response) => {
+booksRouter.get("/", async (req: Request, res: Response): Promise<void> => {
   try {
     const url = GOOGLE_BOOKAPI_URL
     const apiKey = GOOGLE_BOOKAPI
-    let fetchUrl = `${url}?q=`
 
-    if ("category" in req.query) {
-      const { category } = req.query
-      fetchUrl += `${category}`
+    if (!apiKey) {
+      res.status(500).json({ message: "Missing Google Books API key." })
+      return
     }
 
-    if ("lang" in req.query) {
-      const { lang } = req.query
-      fetchUrl += `&langRestrict=${lang}`
-    }
+    const { category, lang, orderBy, limit, index } = req.query
 
-    if ("orderBy" in req.query) {
-      const { orderBy } = req.query
-      fetchUrl += `&orderBy=${orderBy}`
-    }
+    const searchQuery = category ? String(category) : "books"
 
-    if ("limit" in req.query) {
-      const { limit } = req.query
-      fetchUrl += `&maxResults=${limit}`
-    }
+    const params = new URLSearchParams({
+      q: searchQuery,
+      key: apiKey,
+    })
 
-    if ("index" in req.query) {
-      const { index } = req.query
-      fetchUrl += `&startIndex=${index}`
-    }
-    const response = await fetch(`${fetchUrl}&key=${apiKey}`)
+    if (lang) params.append("langRestrict", String(lang))
+    if (orderBy) params.append("orderBy", String(orderBy))
+    if (limit) params.append("maxResults", String(limit))
+    if (index) params.append("startIndex", String(index))
+
+    const fetchUrl = `${url}?${params.toString()}`
+    console.log(fetchUrl)
+
+    const response = await fetch(fetchUrl)
     const data = await response.json()
+
     res.status(200).json({ categories: data })
   } catch (error) {
     res.status(400).json({
