@@ -1,5 +1,5 @@
 import { fromNodeHeaders } from "better-auth/node";
-import { auth } from "../utils/auth.js"; // Ensure this path is correct
+import { auth } from "../utils/auth.js";
 export async function authMiddleware(req, res, next) {
     // Add req, res, next parameters and the Promise<void> return type
     try {

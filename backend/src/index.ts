@@ -6,14 +6,14 @@ import swaggerjsdoc from "swagger-jsdoc"
 import swaggerUi from "swagger-ui-express"
 
 import { toNodeHandler } from "better-auth/node"
-import { auth } from "./src/utils/auth"
+import { auth } from "./utils/auth.js"
 
-import { PORT, APP_HOME } from "./src/utils/secrets"
+import { PORT, APP_HOME } from "./utils/secrets.js"
 
-import userRouter from "./src/routes/user"
-import booksRouter from "./src/routes/books"
-import cartRouter from "./src/routes/cart"
-import { authMiddleware } from "./src/utils/authMiddleware"
+import userRouter from "./routes/user.js"
+import booksRouter from "./routes/books.js"
+import cartRouter from "./routes/cart.js"
+import { authMiddleware } from "./utils/authMiddleware.js"
 
 const app = express()
 

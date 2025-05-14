@@ -1,9 +1,9 @@
 // src/routes/user.ts
 import { Router } from "express"
-import "../types/express"
+import "../types/express.js"
 import type { Request, Response } from "express"
 import { RequestWithUser } from "../types/express"
-import { authMiddleware } from "../utils/authMiddleware"
+import { authMiddleware } from "../utils/authMiddleware.js"
 
 const userRouter = Router()
 

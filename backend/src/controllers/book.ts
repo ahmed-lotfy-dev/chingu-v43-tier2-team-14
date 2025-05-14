@@ -1,6 +1,6 @@
-import { db } from "../db"
-import { book } from "../db/schema"
-import { eq, and } from "drizzle-orm"
+import { db } from "../db/index.js"
+import { book } from "../db/schema.js"
+import { eq } from "drizzle-orm"
 
 export async function AddBook(fields: any) {
   const [created] = await db

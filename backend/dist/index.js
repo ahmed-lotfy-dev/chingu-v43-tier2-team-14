@@ -4,12 +4,12 @@ import helmet from "helmet";
 import swaggerjsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { toNodeHandler } from "better-auth/node";
-import { auth } from "./src/utils/auth";
-import { PORT } from "./src/utils/secrets";
-import userRoutes from "./src/routes/user";
-import booksRoutes from "./src/routes/books";
-import cartRoutes from "./src/routes/cart";
-import { authMiddleware } from "./src/utils/authMiddleware";
+import { auth } from "./utils/auth.js";
+import { PORT } from "./utils/secrets.js";
+import userRouter from "./routes/user.js";
+import booksRouter from "./routes/books.js";
+import cartRouter from "./routes/cart.js";
+import { authMiddleware } from "./utils/authMiddleware.js";
 const app = express();
 const port = PORT || 4000;
 const allowedOrigins = [
@@ -54,9 +54,9 @@ const swaggerOptions = {
 };
 const swaggerDocs = swaggerjsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-app.use("/api/user", authMiddleware, userRoutes);
-app.use("/api/books", authMiddleware, booksRoutes);
-app.use("/api/cart", authMiddleware, cartRoutes);
+app.use("/api/user", authMiddleware, userRouter);
+app.use("/api/books", authMiddleware, booksRouter);
+app.use("/api/cart", authMiddleware, cartRouter);
 app.get("/", (req, res, next) => {
     console.log("Hello World");
     res.status(200).json("hello world");

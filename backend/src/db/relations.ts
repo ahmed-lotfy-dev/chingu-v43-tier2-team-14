@@ -9,7 +9,7 @@ import {
   cart,
   order,
   orderCart,
-} from "./schema"
+} from "./schema.js"
 
 const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),

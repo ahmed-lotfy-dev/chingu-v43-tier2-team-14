@@ -1,7 +1,7 @@
 // src/routes/user.ts
 import { Router } from "express";
-import "../types/express";
-import { authMiddleware } from "../utils/authMiddleware";
+import "../types/express.js";
+import { authMiddleware } from "../utils/authMiddleware.js";
 const userRouter = Router();
 userRouter.get("/me", authMiddleware, (req, res) => {
     if (!req.user) {
