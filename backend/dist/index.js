@@ -4,7 +4,7 @@ import helmet from "helmet";
 import swaggerjsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { toNodeHandler } from "better-auth/node";
-import { auth } from ;
+import { auth } from "./utils/auth.js";
 import { PORT } from "./utils/secrets.js";
 import userRouter from "./routes/user.js";
 import booksRouter from "./routes/books.js";
