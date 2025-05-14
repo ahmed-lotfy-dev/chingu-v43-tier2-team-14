@@ -1,11 +1,11 @@
 import React from "react"
-import { authClient } from "../../../utils/auth-client"
+import { authClient } from "../../utils/auth-client"
 
 const handleSignIn = async () => {
   const data = await authClient.signIn.social({
     provider: "google",
   })
-  
+
   console.log(data)
   localStorage.setItem("isAuthenticated", true)
 }

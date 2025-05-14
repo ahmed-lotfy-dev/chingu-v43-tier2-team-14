@@ -34,7 +34,7 @@ app.use(
       }
     },
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    credentials: true, // This is crucial for cookies
+    credentials: true,
   })
 )
 
@@ -75,7 +75,7 @@ const swaggerDocs = swaggerjsdoc(swaggerOptions)
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 app.use("/api/user", authMiddleware, userRouter)
-app.use("/api/books", authMiddleware, booksRouter)
+app.use("/api/books", booksRouter)
 app.use("/api/cart", authMiddleware, cartRouter)
 
 app.get("/", (req, res, next) => {

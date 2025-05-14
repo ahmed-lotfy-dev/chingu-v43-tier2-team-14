@@ -12,8 +12,14 @@ export const auth = betterAuth({
   },
   socialProviders: {
     google: {
+      prompt: "select_account",
       clientId: GOOGLE_CLIENT_ID!,
       clientSecret: GOOGLE_CLIENT_SECRET!,
+      redirectURI: process.env.REDIRECT_CALLBACK_URL,
     },
   },
+  trustedOrigins: [
+    "http://localhost:3000",
+    "https://books-app-f.ahmedlotfy.dev",
+  ],
 })
