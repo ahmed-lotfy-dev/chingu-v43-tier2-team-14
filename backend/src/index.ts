@@ -21,7 +21,7 @@ const port = PORT || 4000
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://books-app-b.ahmedlotfy.dev",
+  "https://books-app-f.ahmedlotfy.dev",
 ]
 
 // Configure CORS middlewar
