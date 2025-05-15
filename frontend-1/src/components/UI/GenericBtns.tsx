@@ -1,5 +1,10 @@
-// btn with icon
-const GenericBtns = ({ title, icon }) => {
+
+type GenericBtnsProps = {
+  title: string;
+  icon: React.ReactNode;
+};
+
+const GenericBtns = ({ title, icon }: GenericBtnsProps) => {
   return (
     <>
       <button className="flex items-center bg-bg-btn text-text-btn rounded-full px-6 py-2 hover:text-white">

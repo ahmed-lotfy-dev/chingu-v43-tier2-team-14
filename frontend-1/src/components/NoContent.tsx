@@ -1,5 +1,10 @@
-import HomeBtn from "./UI/HomeBtn";
-const NoContent = ({ message }) => {
+import HomeBtn from "./UI/HomeBtn"
+
+interface NoContentProps {
+  message: string;
+}
+
+const NoContent = ({ message }: NoContentProps) => {
   return (
     <>
       <article className="bg-red-200 rounded-sm border-l-4 border-red-600 md:w-1/2 text-center capitalize text-xl mx-auto mt-12">
@@ -9,6 +14,6 @@ const NoContent = ({ message }) => {
         <HomeBtn />
       </div>
     </>
-  );
-};
-export default NoContent;
+  )
+}
+export default NoContent

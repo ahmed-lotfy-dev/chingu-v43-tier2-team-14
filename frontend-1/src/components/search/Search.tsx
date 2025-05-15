@@ -5,7 +5,7 @@ import useDebounce from "../../hooks/useDebounce"
 
 const Search = () => {
   const [value, setValue] = useState("")
-  const [searchResults, setSearchResults] = useState([])
+  const [searchResults, setSearchResults] = useState<{ items: any[] }>({ items: [] })
 
   const debouncedValue = useDebounce(value, 1000)
 
@@ -14,13 +14,13 @@ const Search = () => {
   }
 
   const fetchSearchResults = async (value: string) => {
-    setSearchResults([]) // reset search results to an empty array
+    setSearchResults({ items: [] }) // reset search results to an empty array
     const res = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/api/books/search-books/${value}`
     )
     const data = await res.json()
     if (data && data.books) {
-      setSearchResults(data.books)
+      setSearchResults({ items: data.books })
     }
   }
 

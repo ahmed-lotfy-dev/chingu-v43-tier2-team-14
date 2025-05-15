@@ -15,11 +15,6 @@ const Book = () => {
     queryFn: () => getSingleBook(id as string),
     enabled: !!id,
   })
-  
-  // const { data: singleBook, isLoading } = useFetch(`${
-  //   import.meta.env.VITE_BACKEND_URL
-  // }/api/books/${id}
-  // `)
 
   if (isLoading) {
     return <Loading />
@@ -32,7 +27,7 @@ const Book = () => {
       ) : (
         <div className="items-start justify-center section-wrapper">
           <BookImage singleBook={singleBook} />
-          <BookBody singleBook={singleBook} id={id} />
+          <BookBody singleBook={singleBook} id={id!} />
         </div>
       )}
     </div>

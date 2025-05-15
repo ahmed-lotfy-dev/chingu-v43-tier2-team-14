@@ -1,8 +1,14 @@
 import { RiDeleteBinLine } from "react-icons/ri";
 import QuantityCounter from "./QuantityCounter";
 
-const CartItem = ({ name, price, img, author }) => {
-  const quantity = 1;
+type CartItemProps = {
+  name: string;
+  price: number;
+  img: string;
+  author: string;
+};
+
+const CartItem = ({ name, price, img, author }: CartItemProps) => {
   return (
     <article className="flex flex-col items-center justify-between w-3/4 p-5 mb-5 border-2 border-gray-100 lg:flex-row bg-slate-100 rounded-xl">
       <div className="flex flex-col items-center space-x-4 capitalize lg:flex-row">

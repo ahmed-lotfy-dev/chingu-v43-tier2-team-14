@@ -1,4 +1,14 @@
-const BookImage = ({ singleBook: { imageLinks } }) => {
+type ImageLinks = {
+  thumbnail: string;
+};
+
+type BookImageProps = {
+  singleBook: {
+    imageLinks?: ImageLinks;
+  };
+};
+
+const BookImage = ({ singleBook: { imageLinks } }: BookImageProps) => {
   // const img = imageLinks.thumbnail.replace("zoom=1", "zoom=2");
 
   return (

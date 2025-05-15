@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { FiPlusSquare, FiMinusSquare } from "react-icons/fi";
 
 const QuantityCounter = () => {
   const [quantity, setQuantity] = useState(1);

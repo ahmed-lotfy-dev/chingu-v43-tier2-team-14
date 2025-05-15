@@ -1,4 +1,5 @@
 import { Link } from "react-router"
+
 interface SearchResultsProps {
   results: {
     items: Array<{
