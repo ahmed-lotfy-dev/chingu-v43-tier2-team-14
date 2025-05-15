@@ -41,14 +41,14 @@ const BookCard = ({
   }
 
   return (
-    <article className="relative card z-10 max-w-xs border bg-zinc-100 border-slate-300 shadow-md rounded-md px-2 py-6 flex flex-col items-center justify-between">
+    <article className="relative card z-10      px-2 py-6 flex flex-col items-center justify-between group transition-transform duration-300 ease-in-out transform hover:scale-105 hover:-translate-y-1 hover:shadow-xl  p-4 w-full max-w-[250px] border border-slate-300 rounded-md shadow-md bg-white">
       <figure className="flex cursor-pointer mb-2">
         <Link to={`/book/${id}`}>
           {imageLinks && <img src={imageLinks.thumbnail} alt={title} />}
         </Link>
       </figure>
 
-      <div className="px-4 text-center flex flex-col items-center space-y-2">
+      <div className=" text-center flex flex-col items-center space-y-2">
         <h2 className="font-semibold">{title.substr(0, 25)}</h2>
         <p className="px-2 py-0.5 text-xs bg-red-500 text-white rounded-md w-fit">
           {categories ? categories : "not available!"}

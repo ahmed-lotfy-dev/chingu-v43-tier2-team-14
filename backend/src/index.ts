@@ -14,6 +14,7 @@ import userRouter from "./routes/user.js"
 import booksRouter from "./routes/books.js"
 import cartRouter from "./routes/cart.js"
 import { authMiddleware } from "./utils/authMiddleware.js"
+import { requestLogger, errorLogger } from "./utils/loggerMiddleware"
 
 const app = express()
 
@@ -37,6 +38,10 @@ app.use(
     credentials: true,
   })
 )
+
+// Logger middleware with Winston
+app.use(requestLogger)
+app.use(errorLogger) // Log unhandled errors
 
 // catch all route for better-auth
 // app.all("/api/auth/*", toNodeHandler(auth)) // For ExpressJS v4

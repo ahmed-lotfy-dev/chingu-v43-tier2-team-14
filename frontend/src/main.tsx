@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router"
 import ReactDOM from "react-dom/client"
 
 import App from "./App"
-import Error from "./pages/Error"
+// import Error from "./pages/Error"
 import Home from "./pages/Home"
 import Cart from "./pages/Cart"
 import LogIn from "./pages/LogIn"
@@ -12,13 +12,14 @@ import WishList from "./pages/WishList"
 import Books from "./pages/Books"
 import FeaturedPage from "./pages/FeaturedPage"
 import { getFeaturedBooks } from "./utils/api/featuredBooksApi"
+import Loading from "./components/UI/Loading"
 
 const router = createBrowserRouter([
   {
     path: "/",
 
     element: <App />,
-    errorElement: <Error />,
+    // errorElement: <Error />,
     children: [
       {
         index: true,
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
           // return data from here
           return { data: await getFeaturedBooks() }
         },
+        hydrateFallbackElement: <Loading />,
       },
       {
         path: "/featured/:id",

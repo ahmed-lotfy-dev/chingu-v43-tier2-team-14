@@ -31,7 +31,7 @@ const BooksContainer = () => {
 
   return (
     <section className="w-full">
-      <div className="grid place-items-center grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-6 px-4 py-8 max-w-screen-xl mx-auto">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-5 px-4 py-8 max-w-screen-xl mx-auto justify-items-center ">
         {books?.items?.map((book: any) => (
           <BookCard key={book.id} {...book} />
         ))}

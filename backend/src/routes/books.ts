@@ -42,10 +42,11 @@ booksRouter.get(
       // const fetchUrl = `${NYTIMES_BOOK_URL}/lists/full-overview.json?api-key=${NYTIMES_BOOK_KEY}`
       const fetchUrl = `${NYTIMES_BOOK_URL}/lists/overview.json?api-key=${NYTIMES_BOOK_KEY}`
       const response = await fetch(fetchUrl)
-      const data = await response.json()
-      res
-        .status(200)
-        .json({ message: "books fetched successfully", featuredBooks: data })
+      const data = (await response.json()) as any
+      res.status(200).json({
+        message: "books fetched successfully",
+        featuredBooks: data.results,
+      })
     } catch (error) {
       console.error(error)
       res.status(500).send(error)
