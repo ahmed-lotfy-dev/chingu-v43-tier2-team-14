@@ -3,7 +3,7 @@ import FeaturedListWrapper from "../components/featured/FeaturedListWrapper"
 const Home = () => {
   return (
     <>
-      <section className="w-full items-start justify-start col-start-3 col-span-full">
+      <section className="w-full items-start justify-start col-start-3 col-span-full p-8">
         <CategoriesNav />
         <FeaturedListWrapper />
       </section>

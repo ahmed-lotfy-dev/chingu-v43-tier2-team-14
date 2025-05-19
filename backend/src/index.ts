@@ -13,6 +13,8 @@ import { PORT, APP_HOME } from "./utils/secrets.js"
 import userRouter from "./routes/user.js"
 import booksRouter from "./routes/books.js"
 import cartRouter from "./routes/cart.js"
+import wishlistRouter from "./routes/wishlist"
+
 import { authMiddleware } from "./utils/authMiddleware.js"
 import { requestLogger, errorLogger } from "./utils/loggerMiddleware"
 
@@ -35,7 +37,7 @@ app.use(
       }
     },
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    credentials: true,
+    credentials: true, // <- this is required
   })
 )
 
@@ -82,6 +84,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 app.use("/api/user", authMiddleware, userRouter)
 app.use("/api/books", booksRouter)
 app.use("/api/cart", authMiddleware, cartRouter)
+app.use("/api/wishlist", wishlistRouter)
 
 app.get("/", (req, res, next) => {
   console.log("Hello World")

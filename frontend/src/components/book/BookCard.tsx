@@ -41,8 +41,8 @@ const BookCard = ({
   }
 
   return (
-    <article className="relative card z-10      px-2 py-6 flex flex-col items-center justify-between group transition-transform duration-300 ease-in-out transform hover:scale-105 hover:-translate-y-1 hover:shadow-xl  p-4 w-full max-w-[250px] border border-slate-300 rounded-md shadow-md bg-white">
-      <figure className="flex cursor-pointer mb-2">
+    <article className="flex flex-col justify-between h-full w-full max-w-[250px] border border-slate-300 rounded-md shadow-md bg-white transition-transform duration-300 ease-in-out transform hover:scale-105 hover:-translate-y-1 hover:shadow-xl p-4">
+      <figure className="flex cursor-pointer mb-2 mx-auto">
         <Link to={`/book/${id}`}>
           {imageLinks && <img src={imageLinks.thumbnail} alt={title} />}
         </Link>

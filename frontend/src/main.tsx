@@ -3,31 +3,30 @@ import { createBrowserRouter, RouterProvider } from "react-router"
 import ReactDOM from "react-dom/client"
 
 import App from "./App"
-// import Error from "./pages/Error"
+import Error from "./pages/Error"
 import Home from "./pages/Home"
 import Cart from "./pages/Cart"
-import LogIn from "./pages/LogIn"
 import BookDetails from "./pages/BookDetails"
 import WishList from "./pages/WishList"
 import Books from "./pages/Books"
 import FeaturedPage from "./pages/FeaturedPage"
-import { getFeaturedBooks } from "./utils/api/featuredBooksApi"
 import Loading from "./components/UI/Loading"
+import SignIn from "./pages/Signin"
+import SignUp from "./pages/Signup"
+import User from "./pages/User"
+import NotFound from "./pages/NotFound"
 
 const router = createBrowserRouter([
   {
     path: "/",
 
     element: <App />,
-    // errorElement: <Error />,
+    errorElement: <Error />,
     children: [
       {
         index: true,
         element: <Home />,
-        loader: async () => {
-          // return data from here
-          return { data: await getFeaturedBooks() }
-        },
+        errorElement: "<Error />",
         hydrateFallbackElement: <Loading />,
       },
       {
@@ -48,8 +47,16 @@ const router = createBrowserRouter([
         element: <BookDetails />,
       },
       {
-        path: "login",
-        element: <LogIn />,
+        path: "user",
+        element: <User />,
+      },
+      {
+        path: "signin",
+        element: <SignIn />,
+      },
+      {
+        path: "signup",
+        element: <SignUp />,
       },
       {
         path: "wishlist",
@@ -58,6 +65,10 @@ const router = createBrowserRouter([
       {
         path: "cart",
         element: <Cart />,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
       },
     ],
   },

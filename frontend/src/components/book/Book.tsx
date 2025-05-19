@@ -5,6 +5,7 @@ import NoContent from "../NoContent"
 import Loading from "../UI/Loading"
 import { useQuery } from "@tanstack/react-query"
 import { getSingleBook } from "../../utils/api/singleBookApi"
+import { ONE_DAY } from "../../utils/constants"
 
 const Book = () => {
   // const single_book_url = `${import.meta.env.VITE_BACKEND_URL}/api/books/`;
@@ -14,6 +15,7 @@ const Book = () => {
     queryKey: ["singleBook", isbn],
     queryFn: () => getSingleBook(isbn as string),
     enabled: !!isbn,
+    staleTime: ONE_DAY * 7,
   })
 
   if (isLoading) {

@@ -7,11 +7,13 @@ const useAuth = () => {
   const user = userStore((state) => state.user)
   const setUser = userStore((state) => state.setUser)
   const logOut = userStore((state) => state.logout)
+
   useEffect(() => {
-    if (setUser) {
-      setUser(data?.user)
+    if (data?.user && !user && typeof setUser === "function") {
+      setUser(data.user)
     }
-  }, [data?.user, setUser])
+  }, [data?.user, user, setUser])
+
   return {
     user: user ?? null,
     logOut,

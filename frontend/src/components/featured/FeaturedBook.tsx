@@ -4,6 +4,7 @@ import BookImage from "../book/BookImage"
 import Loading from "../UI/Loading"
 import { useQuery } from "@tanstack/react-query"
 import { getSingleBook } from "../../utils/api/singleBookApi"
+import { ONE_DAY } from "../../utils/constants"
 
 const FeaturedSingleBook = () => {
   const { isbn } = useParams()
@@ -16,6 +17,7 @@ const FeaturedSingleBook = () => {
     queryKey: ["singleFeaturedBook", isbn],
     queryFn: () => getSingleBook(isbn as string),
     enabled: !!isbn,
+    staleTime: ONE_DAY,
   })
 
   if (isLoading) return <Loading />

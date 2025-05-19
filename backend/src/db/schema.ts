@@ -1,4 +1,5 @@
 import {
+  uuid,
   pgTable,
   text,
   timestamp,
@@ -57,7 +58,7 @@ const verification = pgTable("verification", {
 })
 
 const book = pgTable("book", {
-  id: text("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   googleBookId: text("google_book_id"),
   title: text("title").notNull(),
   description: text("description"),
@@ -70,11 +71,11 @@ const book = pgTable("book", {
 })
 
 const userBook = pgTable("user_book", {
-  id: text("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
-  bookId: text("book_id")
+  bookId: uuid("book_id")
     .notNull()
     .references(() => book.id, { onDelete: "cascade" }),
 
@@ -87,7 +88,7 @@ const userBook = pgTable("user_book", {
 })
 
 const cart = pgTable("cart_item", {
-  id: text("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
   userId: text("user_id")
     .notNull()
@@ -101,7 +102,7 @@ const cart = pgTable("cart_item", {
 })
 
 const order = pgTable("order", {
-  id: text("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
@@ -112,10 +113,11 @@ const order = pgTable("order", {
 const orderCart = pgTable(
   "order_cart",
   {
-    orderId: text("order_id")
+    orderId: uuid("order_id")
       .notNull()
       .references(() => order.id, { onDelete: "cascade" }),
-    cartItemId: text("cart_item_id")
+
+    cartItemId: uuid("cart_item_id")
       .notNull()
       .references(() => cart.id, { onDelete: "cascade" }),
   },

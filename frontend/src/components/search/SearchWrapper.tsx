@@ -5,10 +5,10 @@ import Search from "./Search"
 import useAuth from "../../hooks/useAuth"
 
 const SearchWrapper = () => {
-  const user = useAuth()
+  const { user } = useAuth()
 
   return (
-    <div className=" flex flex-row justify-center items-center md:flex-row gap-3 px-5 mt-3">
+    <div className=" flex flex-row justify-center items-center md:flex-row gap-3 mt-3 px-8">
       <Search />
       <div>
         {!user ? (

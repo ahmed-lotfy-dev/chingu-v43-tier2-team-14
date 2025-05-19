@@ -62,7 +62,7 @@ const BooksContainer = () => {
   return (
     <section className="w-full">
       <div
-        className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-5 px-4 py-8 max-w-screen-xl mx-auto justify-items-center"
+        className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-5 px-4 py-8 max-w-screen-xl mx-auto justify-items-stretch"
         ref={loadMoreRef}
       >
         {books?.map((book: any, idx: number) => {
