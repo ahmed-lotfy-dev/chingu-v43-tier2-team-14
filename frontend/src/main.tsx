@@ -31,7 +31,7 @@ const router = createBrowserRouter([
         hydrateFallbackElement: <Loading />,
       },
       {
-        path: "/featured/:id",
+        path: "/featured/:isbn",
         // element: <FeaturedSingleBook />,
         element: <FeaturedPage />,
       },
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
         element: <Books />,
       },
       {
-        path: "book/:id",
+        path: "book/:isbn",
         element: <BookDetails />,
       },
       {

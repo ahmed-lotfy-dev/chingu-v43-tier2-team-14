@@ -1,10 +1,11 @@
 import { create } from "zustand"
-import { devtools } from "zustand/middleware"
+import { authClient } from "../utils/auth-client"
 
 type User = {
   id: string
   name: string
   email: string
+  image: string
 }
 
 type UserStore = {
@@ -20,7 +21,8 @@ const store = (set: (partial: Partial<UserStore>) => void): UserStore => ({
   },
   logout: async () => {
     set({ user: null })
+    await authClient.logout()
   },
 })
 
-export const userStore = create(devtools(store))
+export const userStore = create(store)

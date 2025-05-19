@@ -3,10 +3,13 @@ import Footer from "./components/Footer"
 import Sidebar from "./components/Sidebar"
 import SearchWrapper from "./components/search/SearchWrapper"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import useAuth from "./hooks/useAuth"
 
 const queryClient = new QueryClient()
 
 const App = () => {
+  const { user } = useAuth()
+  console.log(user)
   return (
     <QueryClientProvider client={queryClient}>
       <main className="bg-gray-50 min-h-screen flex flex-col">

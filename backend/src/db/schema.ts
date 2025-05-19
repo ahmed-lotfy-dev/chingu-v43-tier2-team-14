@@ -6,7 +6,7 @@ import {
   primaryKey,
 } from "drizzle-orm/pg-core"
 
- const user = pgTable("user", {
+const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
@@ -16,7 +16,7 @@ import {
   updatedAt: timestamp("updated_at").notNull(),
 })
 
- const session = pgTable("session", {
+const session = pgTable("session", {
   id: text("id").primaryKey(),
   expiresAt: timestamp("expires_at").notNull(),
   token: text("token").notNull().unique(),
@@ -29,7 +29,7 @@ import {
     .references(() => user.id, { onDelete: "cascade" }),
 })
 
- const account = pgTable("account", {
+const account = pgTable("account", {
   id: text("id").primaryKey(),
   accountId: text("account_id").notNull(),
   providerId: text("provider_id").notNull(),
@@ -47,7 +47,7 @@ import {
   updatedAt: timestamp("updated_at").notNull(),
 })
 
- const verification = pgTable("verification", {
+const verification = pgTable("verification", {
   id: text("id").primaryKey(),
   identifier: text("identifier").notNull(),
   value: text("value").notNull(),
@@ -56,7 +56,7 @@ import {
   updatedAt: timestamp("updated_at"),
 })
 
- const book = pgTable("book", {
+const book = pgTable("book", {
   id: text("id").primaryKey(),
   googleBookId: text("google_book_id"),
   title: text("title").notNull(),
@@ -69,7 +69,7 @@ import {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 })
 
- const userBook = pgTable("user_book", {
+const userBook = pgTable("user_book", {
   id: text("id").primaryKey(),
   userId: text("user_id")
     .notNull()
@@ -86,7 +86,7 @@ import {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 })
 
- const cart = pgTable("cart_item", {
+const cart = pgTable("cart_item", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   userId: text("user_id")
@@ -100,7 +100,7 @@ import {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 })
 
- const order = pgTable("order", {
+const order = pgTable("order", {
   id: text("id").primaryKey(),
   userId: text("user_id")
     .notNull()
@@ -109,7 +109,7 @@ import {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 })
 
- const orderCart = pgTable(
+const orderCart = pgTable(
   "order_cart",
   {
     orderId: text("order_id")
@@ -124,7 +124,7 @@ import {
   })
 )
 
-export type UserType = typeof user.$inferSelect;
+export type UserType = typeof user.$inferSelect
 
 export {
   user,
@@ -136,4 +136,4 @@ export {
   cart,
   order,
   orderCart,
-};
+}

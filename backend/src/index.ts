@@ -40,8 +40,8 @@ app.use(
 )
 
 // Logger middleware with Winston
-app.use(requestLogger)
-app.use(errorLogger) // Log unhandled errors
+// app.use(requestLogger)
+// app.use(errorLogger) // Log unhandled errors
 
 // catch all route for better-auth
 // app.all("/api/auth/*", toNodeHandler(auth)) // For ExpressJS v4

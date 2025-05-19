@@ -1,6 +1,5 @@
 import { Router, Request, Response } from "express"
 
-import fetch from "node-fetch"
 import {
   GOOGLE_BOOKAPI_URL,
   GOOGLE_BOOKAPI,
@@ -13,8 +12,175 @@ import { book, user } from "../db/schema.js"
 import { eq } from "drizzle-orm"
 import { AddBook } from "../controllers/book.js"
 import { RequestWithUser } from "../types/express.js"
+import axios from "axios"
+import { redisClient } from "../utils/redis.js"
 
 const booksRouter = Router()
+
+const BOOK_CACHE_EXPIRY = 60 * 60 * 24 // Cache for 24 hours
+
+/**
+ * @swagger
+ * /api/books:
+ *   get:
+ *     summary: Get books based on query parameters
+ *     description: Retrieve books based on various query parameters like category, language, etc.
+ *     parameters:
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *         description: Category of books to filter by.
+ *       - in: query
+ *         name: lang
+ *         schema:
+ *           type: string
+ *         description: Language restriction for the books.
+ *       - in: query
+ *         name: orderBy
+ *         schema:
+ *           type: string
+ *         description: Order books by a certain criteria.
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: Maximum number of books to return.
+ *       - in: query
+ *         name: index
+ *         schema:
+ *           type: integer
+ *         description: Starting index for paginated results.
+ *     responses:
+ *       '200':
+ *         description: Books fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object  # Update with the appropriate schema definition
+ *       '400':
+ *         description: Error fetching books. Error message included in the response body.
+ */
+
+booksRouter.get("/", async (req: Request, res: Response): Promise<any> => {
+  try {
+    const url = GOOGLE_BOOKAPI_URL
+    const apiKey = GOOGLE_BOOKAPI
+    if (!apiKey) {
+      return res.status(500).json({ message: "Missing Google Books API key." })
+    }
+
+    const { category, lang, orderBy, limit = 10, page = 1 } = req.query
+
+    const searchQuery = category ? String(category) : "books"
+
+    const params = new URLSearchParams({
+      q: searchQuery,
+      key: apiKey,
+    })
+
+    if (lang) params.append("langRestrict", String(lang))
+    if (orderBy) params.append("orderBy", String(orderBy))
+    params.append("maxResults", String(limit))
+    params.append("startIndex", String((Number(page) - 1) * Number(limit)))
+
+    const fetchUrl = `${url}?${params.toString()}`
+    const cacheKey = `books:list:${searchQuery.toString()}:${page}`
+
+    const cached = await redisClient.get(cacheKey)
+    if (cached) {
+      return res.status(200).json({
+        message: "books list fetched from cache",
+        categories: JSON.parse(cached),
+      })
+    }
+
+    console.log(fetchUrl)
+    const response = await axios.get(fetchUrl)
+    // await redisClient.set(cacheKey, JSON.stringify(response.data), "EX", 86400)
+
+    const totalItems = response.data.totalItems || 0
+    const itemsPerPage = Number(limit)
+    const nextPage = Number(page) + 1
+    const hasNextPage =
+      response.data.items && response.data.items.length === itemsPerPage
+
+    return res.status(200).json({
+      items: response.data.items || [],
+      nextCursor: hasNextPage ? nextPage : null,
+    })
+  } catch (error) {
+    if (!res.headersSent) {
+      return res.status(500).json({
+        message:
+          error instanceof Error ? error.message : "Unknown error occurred",
+      })
+    }
+
+    console.error("Failed to send response:", error)
+  }
+})
+
+/**
+ * @swagger
+ * /api/books/{id}:
+ *   get:
+ *     summary: Get details of a book by its ID
+ *     description: Retrieve details of a book by its ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         example: fFCjDQAAQBAJ
+ *         required: true
+ *         description: The ID of the book to fetch.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Book fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object  # Update with the appropriate schema definition
+ *       '400':
+ *         description: Error fetching book. Error message included in the response body.
+ */
+
+booksRouter.get(
+  "/by-isbn/:isbn",
+  async (req: Request, res: Response): Promise<any> => {
+    try {
+      const { isbn } = req.params
+      const cacheKey = `book:${isbn}`
+      console.log(isbn)
+      // Check Redis cache first
+      const cachedBook = await redisClient.get(cacheKey)
+      if (cachedBook) {
+        return res.status(200).json({
+          book: JSON.parse(cachedBook),
+        })
+      }
+      // If not in cache, fetch from Google Books API
+      const fetchUrl = `${GOOGLE_BOOKAPI_URL}?q=isbn:${isbn}&key=${GOOGLE_BOOKAPI}`
+      const response = await axios.get(fetchUrl)
+      const bookData = response.data
+      console.log({ bookData })
+      // Save to Redis cache
+      await redisClient.setex(
+        cacheKey,
+        BOOK_CACHE_EXPIRY,
+        JSON.stringify(bookData)
+      )
+
+      return res.status(200).json({
+        book: bookData,
+      })
+    } catch (error) {
+      console.error("Fetch error:", error)
+      return res.status(400).json({ message: "Error Fetching Book" })
+    }
+  }
+)
 
 /**
  * @swagger
@@ -37,19 +203,40 @@ const booksRouter = Router()
 
 booksRouter.get(
   "/featured-books",
-  async (req: Request, res: Response): Promise<void> => {
+  async (req: Request, res: Response): Promise<any> => {
     try {
-      // const fetchUrl = `${NYTIMES_BOOK_URL}/lists/full-overview.json?api-key=${NYTIMES_BOOK_KEY}`
+      const cacheKey = "featuredBook"
+      const metaKey = "featuredBook:lastModified"
+
+      const cachedLastModified = await redisClient.get(metaKey)
       const fetchUrl = `${NYTIMES_BOOK_URL}/lists/overview.json?api-key=${NYTIMES_BOOK_KEY}`
-      const response = await fetch(fetchUrl)
-      const data = (await response.json()) as any
-      res.status(200).json({
-        message: "books fetched successfully",
-        featuredBooks: data.results,
+
+      const response = await axios.get(fetchUrl)
+      const fetchedData = response.data.results
+      const newLastModified =
+        response.data.last_modified || response.data.updated
+
+      if (cachedLastModified === newLastModified) {
+        const cachedData = await redisClient.get(cacheKey)
+        if (cachedData) {
+          return res.status(200).json({
+            message: "featured books fetched from redis cache successfully",
+            featuredBooks: JSON.parse(cachedData),
+          })
+        }
+      }
+
+      // Cache the new data and timestamp
+      await redisClient.set(cacheKey, JSON.stringify(fetchedData), "EX", 3600)
+      await redisClient.set(metaKey, newLastModified, "EX", 3600)
+
+      return res.status(200).json({
+        message: "books fetched and cache updated",
+        featuredBooks: fetchedData,
       })
     } catch (error) {
       console.error(error)
-      res.status(500).send(error)
+      return res.status(500).send({ message: "Error fetching featured books" })
     }
   }
 )
@@ -77,24 +264,44 @@ booksRouter.get(
  *               type: object  # Update with the appropriate schema definition
  */
 
-booksRouter.get("/single-book/:title", async (req: Request, res: Response) => {
-  try {
-    const { title } = req.params
-    const url = GOOGLE_BOOKAPI_URL
-    const apiKey = GOOGLE_BOOKAPI
-    const response = await fetch(`${url}?q=${title}&maxResults=1&key=${apiKey}`)
-    const data = await response.json()
-    console.log(data)
+// booksRouter.get(
+//   "/single-book/:title",
+//   async (req: Request, res: Response): Promise<any> => {
+//     try {
+//       const { title } = req.params
+//       const cacheKey = `books:single-book:${title}`
 
-    console.log("from inside singlebook title")
-    res.status(200).json({ singleBook: data })
-  } catch (error) {
-    res.status(400).json({
-      message:
-        error instanceof Error ? error.message : "An unknown error occurred",
-    })
-  }
-})
+//       // Try to get from cache
+//       const cachedData = await redisClient.get(cacheKey)
+//       if (cachedData) {
+//         return res.status(200).json({
+//           message: "Single book fetched from cache",
+//           singleBook: JSON.parse(cachedData),
+//         })
+//       }
+
+//       // Fetch from Google Books API
+//       const response = await axios.get(
+//         `${GOOGLE_BOOKAPI_URL}?q=intitle:${encodeURIComponent(
+//           title
+//         )}&maxResults=1&key=${GOOGLE_BOOKAPI}`
+//       )
+//       const fetchedData = response.data
+//       // Store in cache for 1 week
+//       await redisClient.set(cacheKey, JSON.stringify(fetchedData), "EX", 604800)
+
+//       return res.status(200).json({
+//         message: "Single book fetched from API and cached",
+//         singleBook: fetchedData,
+//       })
+//     } catch (error) {
+//       return res.status(400).json({
+//         message:
+//           error instanceof Error ? error.message : "An unknown error occurred",
+//       })
+//     }
+//   }
+// )
 
 /**
  * @swagger
@@ -119,24 +326,44 @@ booksRouter.get("/single-book/:title", async (req: Request, res: Response) => {
  *               type: object  # Update with the appropriate schema definition
  */
 
-booksRouter.get("/search-books/:query", async (req: Request, res: Response) => {
-  try {
+booksRouter.get(
+  "/search-books/:query",
+  async (req: Request, res: Response): Promise<any> => {
     const { query } = req.params
-    const url = GOOGLE_BOOKAPI_URL
-    const apiKey = GOOGLE_BOOKAPI
-    const response = await fetch(
-      `${url}?q=${query}+intitle:${query}&key=${apiKey}`
-    )
-    const data = await response.json()
-    console.log("from inside search-books intitle")
-    res.status(200).json({ books: data })
-  } catch (error) {
-    res.status(400).json({
-      message:
-        error instanceof Error ? error.message : "An unknown error occurred",
-    })
+    const cacheKey = `books:search:${query}`
+
+    try {
+      const cached = await redisClient.get(cacheKey)
+      if (cached) {
+        return res.status(200).json({
+          message: "Books fetched from cache successfully",
+          books: JSON.parse(cached),
+        })
+      }
+      const url = GOOGLE_BOOKAPI_URL
+      const apiKey = GOOGLE_BOOKAPI
+      const response = await axios.get(
+        `${url}?q=${query}+intitle:${query}&key=${apiKey}`
+      )
+
+      const result = response.data
+      await redisClient.set(cacheKey, JSON.stringify(result), "EX", 86400)
+      return res.status(200).json({
+        message: "Books fetched from API and cached",
+        books: result,
+      })
+    } catch (error) {
+      if (!res.headersSent) {
+        return res.status(500).json({
+          message:
+            error instanceof Error ? error.message : "Unknown error occurred",
+        })
+      } else {
+        console.error("Failed to send response:", error)
+      }
+    }
   }
-})
+)
 
 /**
  * @swagger
@@ -163,7 +390,7 @@ booksRouter.get("/search-books/:query", async (req: Request, res: Response) => {
 
 booksRouter.get(
   "/get-user-books/:userId",
-  async (req: Request, res: Response): Promise<void> => {
+  async (req: Request, res: Response): Promise<any> => {
     try {
       const { userId } = req.params // Retrieve userId from path parameters
       const existedUser = await db.query.user.findFirst({
@@ -175,16 +402,15 @@ booksRouter.get(
 
       // const user = await User.findOne({ _id: userId }).populate("books")
       if (!existedUser) {
-        res.status(404).json({ message: "User not found" })
-        return
+        return res.status(404).json({ message: "User not found" })
       }
 
-      res.status(200).json({
+      return res.status(200).json({
         message: "User Books Fetched Successfully",
         books: existedUser.userBooks,
       })
     } catch (error) {
-      res.status(400).json({
+      return res.status(400).json({
         message:
           error instanceof Error ? error.message : "An unknown error occurred",
       })
@@ -364,127 +590,5 @@ booksRouter.delete(
     }
   }
 )
-
-/**
- * @swagger
- * /api/books/{id}:
- *   get:
- *     summary: Get details of a book by its ID
- *     description: Retrieve details of a book by its ID.
- *     parameters:
- *       - in: path
- *         name: id
- *         example: fFCjDQAAQBAJ
- *         required: true
- *         description: The ID of the book to fetch.
- *         schema:
- *           type: string
- *     responses:
- *       '200':
- *         description: Book fetched successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object  # Update with the appropriate schema definition
- *       '400':
- *         description: Error fetching book. Error message included in the response body.
- */
-
-booksRouter.get("/:id", async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params
-    const url = GOOGLE_BOOKAPI_URL
-    const apiKey = GOOGLE_BOOKAPI
-    const fetchUrl = `${url}/${id}?key=${apiKey}`
-
-    const response = await fetch(fetchUrl)
-    const data = await response.json()
-    res.status(200).json({ message: "Book Fetched Successfully", Book: data })
-  } catch (error) {
-    res.status(400).json({ message: "Error Fetching Book" })
-  }
-})
-
-/**
- * @swagger
- * /api/books:
- *   get:
- *     summary: Get books based on query parameters
- *     description: Retrieve books based on various query parameters like category, language, etc.
- *     parameters:
- *       - in: query
- *         name: category
- *         schema:
- *           type: string
- *         description: Category of books to filter by.
- *       - in: query
- *         name: lang
- *         schema:
- *           type: string
- *         description: Language restriction for the books.
- *       - in: query
- *         name: orderBy
- *         schema:
- *           type: string
- *         description: Order books by a certain criteria.
- *       - in: query
- *         name: limit
- *         schema:
- *           type: integer
- *         description: Maximum number of books to return.
- *       - in: query
- *         name: index
- *         schema:
- *           type: integer
- *         description: Starting index for paginated results.
- *     responses:
- *       '200':
- *         description: Books fetched successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object  # Update with the appropriate schema definition
- *       '400':
- *         description: Error fetching books. Error message included in the response body.
- */
-
-booksRouter.get("/", async (req: Request, res: Response): Promise<void> => {
-  try {
-    const url = GOOGLE_BOOKAPI_URL
-    const apiKey = GOOGLE_BOOKAPI
-
-    if (!apiKey) {
-      res.status(500).json({ message: "Missing Google Books API key." })
-      return
-    }
-
-    const { category, lang, orderBy, limit, index } = req.query
-
-    const searchQuery = category ? String(category) : "books"
-
-    const params = new URLSearchParams({
-      q: searchQuery,
-      key: apiKey,
-    })
-
-    if (lang) params.append("langRestrict", String(lang))
-    if (orderBy) params.append("orderBy", String(orderBy))
-    if (limit) params.append("maxResults", String(limit))
-    if (index) params.append("startIndex", String(index))
-
-    const fetchUrl = `${url}?${params.toString()}`
-    console.log(fetchUrl)
-
-    const response = await fetch(fetchUrl)
-    const data = await response.json()
-
-    res.status(200).json({ categories: data })
-  } catch (error) {
-    res.status(400).json({
-      message:
-        error instanceof Error ? error.message : "An unknown error occurred",
-    })
-  }
-})
 
 export default booksRouter

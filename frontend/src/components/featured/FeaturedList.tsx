@@ -4,6 +4,7 @@ interface Book {
   title: string
   book_image: string
   primary_isbn13: string
+  isbns: { isbn10: string; isbn13: string }[]
 }
 
 interface FeaturedListProps {
@@ -14,11 +15,18 @@ interface FeaturedListProps {
 
 const FeaturedList = ({ list }: FeaturedListProps) => {
   const { books } = list
-  console.log(books)
+
   return (
     <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-6 justify-items-center">
       {books?.map((book: Book) => {
-        const { title, book_image, primary_isbn13: id } = book
+        const {
+          title,
+          book_image,
+          primary_isbn13: id,
+          primary_isbn13,
+          isbns,
+        } = book
+        const bookId = primary_isbn13 || isbns?.[0]?.isbn13
         return (
           <article
             key={id}
@@ -28,7 +36,7 @@ const FeaturedList = ({ list }: FeaturedListProps) => {
               {title.substring(0, 20)}
               {/* longer preview */}
             </h4>
-            <Link to={`/featured/${title}`}>
+            <Link to={`/featured/${bookId}`}>
               <figure className="w-full">
                 <img
                   src={book_image}

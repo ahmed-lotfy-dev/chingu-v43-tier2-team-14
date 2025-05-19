@@ -1,29 +1,27 @@
 import { useParams } from "react-router"
-import { useEffect, useState } from "react"
 import BookBody from "../book/BookBody"
 import BookImage from "../book/BookImage"
 import Loading from "../UI/Loading"
-type SingleBook = {
-  id: string;
-  volumeInfo: any; 
-};
+import { useQuery } from "@tanstack/react-query"
+import { getSingleBook } from "../../utils/api/singleBookApi"
 
 const FeaturedSingleBook = () => {
-  const { id } = useParams()
-  const [singleBook, setSingleBook] = useState<SingleBook | null>(null)
-  const fetchSingleBook = async () => {
-    const res = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/books/single-book/${id}`
-    )
-    const data = await res.json()
-    setSingleBook(data.singleBook.items[0])
-  }
-  console.log("from featured book", { singleBook })
+  const { isbn } = useParams()
+  const {
+    data: singleBook,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["singleFeaturedBook", isbn],
+    queryFn: () => getSingleBook(isbn as string),
+    enabled: !!isbn,
+  })
 
-  useEffect(() => {
-    fetchSingleBook()
-  }, [id])
-
+  if (isLoading) return <Loading />
+  if (isError) return <div>Error loading book. {error.message}</div>
+  console.log(singleBook)
+  console.log(isbn)
   return (
     <div className="px-8 mx-auto mb-14 lg:px-24">
       {!singleBook ? (

@@ -1,110 +1,132 @@
-# Virtual Book App (Chingue-v43-tier-2-team-14)
+# Virtual Book App (Chingu-v43-tier-2-team-14)
 
 ## Overview
 
-The project is a virtual book store made by react with fetched data from external API.
-
-1. Google Books API.
-2. NY Times Best Seller's API.
+Virtual Book App is a modern, full-stack virtual bookstore. Users can search for books, view featured and bestsellers, add books to their wishlist, and authenticate with Google. The app fetches data from the Google Books API and NY Times Best Seller's API.
 
 ## Features
 
-- multi pages with dynamic routing
-- search books by title and author
-- functionality to add book to wishlist
-- authentication with google
-- responsive desgin
+- Multi-page app with dynamic routing
+- Search books by title and author
+- Add books to wishlist
+- Google authentication
+- Responsive design
+- View featured and best-selling books
 
-## Deployed Links
+## Live Demo
 
-Frontend Deployed Link :
-https://v43-tier2-team14-frontend.onrender.com/
+- **Frontend:** [View App](https://v43-tier2-team14-frontend.onrender.com/)
+- **Backend:** [API Server](https://v43-tier2-team14-backend.onrender.com/)
+- **API Documentation:** [Postman Docs](https://documenter.getpostman.com/view/18748695/2s93Xx1jjT)
 
-Backend Deploted Link :
-https://v43-tier2-team14-backend.onrender.com/
-
-Backend Documentation link :
-https://documenter.getpostman.com/view/18748695/2s93Xx1jjT
-
-## How To Use
-
-To be able to use this react app locally in a development environment you will need the following:
-
-1. You will need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) installed on your computer.
-
-2. Then From your terminal, you should do the following:
-
-```cmd
-# Clone this repository
-git clone https://github.com/chingu-voyages/v43-tier2-team-14.git
-
-# Go into the repository
-cd v43-tier2-team-14
-
-# navigate to frontend folder
-cd frontend
-
-# Install dependencies
-npm install
-
-# create .env.development if running in development
-and then add
-VITE_BACKEND_URL="http://localhost:4000"
-
-# Run the app
-npm run dev
-```
-
-3. In Another console
-
-```
-# Navigate back to the v43-tier2-team-14 folder
-
-# Then go to backend folder
-
-# Install dependencies
-npm install
-
-# Create .env file  add the necessary secrets environment variables
-
- PORT = ""
- HTTPS_PORT = ""
- MONGO_URI = ""
- GOOGLE_ID = ""
- GOOGLE_SECRET = ""
- GOOGLE_BOOKAPI = ""
- SESSION_SECRET = ""
- GOOGLE_BOOKAPI_URL = ""
- APP_HOME = ""
- NYTIMES_BOOK_KEY = ""
- NYTIMES_BOOK_SECRET = ""
- NYTIMES_BOOK_URL = ""
-
-# Run the backend server
-npm run dev
-```
-
-
-## Technologies used
+## Technologies Used
 
 ### Frontend
 
-- Vite
-- TailwindCSS
-- Zustand
-- React Router
+- [React](https://react.dev/) (Vite)
+- [TailwindCSS](https://tailwindcss.com/)
+- [Zustand](https://zustand-demo.pmnd.rs/)
+- [React Router](https://reactrouter.com/)
 - React Hooks
-- React icons
+- React Icons
 
 ### Backend
 
-- Express
-- MongoDB
-- Passport
-- Mongoose
+- [Express.js](https://expressjs.com/)
+- [MongoDB](https://www.mongodb.com/) (Mongoose)
+- [Passport.js](http://www.passportjs.org/) (Google OAuth)
 - Express Session
+- Redis (caching)
+
+## Getting Started
+
+### Prerequisites
+
+- [Git](https://git-scm.com)
+- [Node.js](https://nodejs.org/en/download/)
+- [pnpm](https://pnpm.io/) (recommended, or use npm/yarn)
+
+### Setup Instructions
+
+#### 1. Clone the repository
+
+```bash
+git clone https://github.com/chingu-voyages/v43-tier2-team-14.git
+cd v43-tier2-team-14
+```
+
+#### 2. Frontend Setup
+
+```bash
+cd frontend
+pnpm install # or npm install
+# Create .env.development and add:
+# VITE_BACKEND_URL="http://localhost:4000"
+pnpm run dev # or npm run dev
+```
+
+#### 3. Backend Setup
+
+```bash
+cd ../backend
+pnpm install # or npm install
+# Create .env and add the following environment variables:
+# (see below for details)
+pnpm run dev # or npm run dev
+```
+
+### Required Environment Variables
+
+**Backend (.env):**
+
+```
+PORT=4000
+HTTPS_PORT=443
+MONGO_URI=your_mongodb_uri
+GOOGLE_ID=your_google_client_id
+GOOGLE_SECRET=your_google_client_secret
+GOOGLE_BOOKAPI=your_google_books_api_key
+SESSION_SECRET=your_session_secret
+GOOGLE_BOOKAPI_URL=https://www.googleapis.com/books/v1/volumes
+APP_HOME=http://localhost:4000
+NYTIMES_BOOK_KEY=your_nytimes_api_key
+NYTIMES_BOOK_SECRET=your_nytimes_secret
+NYTIMES_BOOK_URL=https://api.nytimes.com/svc/books/v3
+```
+
+**Frontend (.env.development):**
+
+```
+VITE_BACKEND_URL=http://localhost:4000
+```
+
+## API Usage
+
+The backend exposes several RESTful endpoints. Here are some key routes:
+
+- `GET /api/books` — List books (supports query params: category, lang, orderBy, limit, index)
+- `GET /api/books/featured-books` — Get featured books (NY Times)
+- `GET /api/books/single-book/:title` — Get a single book by title
+- `GET /api/books/by-title/:id` — Get a book by Google Books ID
+- `GET /api/books/search-books/:query` — Search books by query
+- `GET /api/books/get-user-books/:userId` — Get books for a user
+- `POST /api/books/add-book` — Add a book to a user's collection
+- `DELETE /api/books/remove-book` — Remove a book from a user's collection
+
+See [API Documentation](https://documenter.getpostman.com/view/18748695/2s93Xx1jjT) for full details and request/response examples.
 
 ## Contributing
 
-Kindly check the contributing instructions listed in
-[CONTRIBUTING file](https://github.com/chingu-voyages/v43-tier2-team-14/blob/main/CONTRIBUTING.md)
+We welcome contributions! Please read the [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+
+- Fork the repo and create your branch from `main`.
+- Run the app locally and test your changes.
+- Open a pull request with a clear description of your changes.
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+_Developed by Chingu Voyage v43 Tier 2 Team 14_

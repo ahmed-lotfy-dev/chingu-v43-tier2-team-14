@@ -1,13 +1,24 @@
 import { useLoaderData } from "react-router"
 import FeaturedBookBody from "./FeaturedBookBody"
+import Loading from "../UI/Loading"
+import NoContent from "../NoContent"
 
 const FeaturedListWrapper = () => {
-  const { data: featuredBooks } = useLoaderData()
+  const loaderData = useLoaderData() as { data?: any; error?: string }
+
+  const featuredBooks = loaderData?.data
+  const error = loaderData?.error
+
+  if (!featuredBooks && !error) return <Loading size="large" color="blue" />
+  if (error || !featuredBooks) {
+    return <NoContent message={error || "No featured books available."} />
+  }
+
   return (
     <div className="flex flex-col p-5 mb-24 md:pr-24">
       <h2 className="font-semibold text-center">
         Best Sellers Books For &nbsp;
-        {featuredBooks && featuredBooks.bestsellers_date
+        {featuredBooks.bestsellers_date
           ? new Date(featuredBooks.bestsellers_date).toLocaleDateString(
               "en-us",
               {
@@ -17,9 +28,9 @@ const FeaturedListWrapper = () => {
                 day: "numeric",
               }
             )
-          : "Loading..."}
+          : "Unknown Date"}
       </h2>
-      <FeaturedBookBody />
+      <FeaturedBookBody featuredBooks={featuredBooks} />
     </div>
   )
 }

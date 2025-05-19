@@ -13,16 +13,16 @@ import {
 // import useCart from "../../hooks/useCart"
 
 type BookBodyProps = {
-  id: string;
+  id: string
   singleBook: {
-    title: string;
-    categories: string[];
-    pageCount: number;
-    imageLinks: string;
-    description: string;
-    authors: string[];
-  };
-};
+    title: string
+    categories: string[]
+    pageCount: number
+    imageLinks: string
+    description: string
+    authors: string[]
+  }
+}
 
 const BookBody = ({
   id,
@@ -45,7 +45,7 @@ const BookBody = ({
     pageCount,
     image: imageLinks,
     description,
-    author: authors[0],
+    author: authors,
     // price: saleInfo.amount,
   }
   return (
@@ -57,9 +57,7 @@ const BookBody = ({
       )}
 
       {authors && (
-        <div className="font-semibold text-red-500 capitalize">
-          {authors[0]}
-        </div>
+        <div className="font-semibold text-red-500 capitalize">{authors}</div>
       )}
 
       {categories && (

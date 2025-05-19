@@ -14,7 +14,7 @@ const BookImage = ({ singleBook: { imageLinks } }: BookImageProps) => {
   return (
     <img
       decoding="async"
-      className="mx-auto w-64 mb-8 lg:mb-0"
+      className="mx-auto w-52 aspect-auto my-12"
       src={
         imageLinks
           ? imageLinks.thumbnail
