@@ -1,8 +1,9 @@
 import axios from "axios"
+import { BASE_URL } from "../constants"
 
 export const getSingleBook = async (isbn: string) => {
   const { data } = await axios.get(
-    `${import.meta.env.VITE_BACKEND_URL}/api/books/by-isbn/${isbn}
+    `${BASE_URL}/api/books/by-isbn/${isbn}
 `
   )
 

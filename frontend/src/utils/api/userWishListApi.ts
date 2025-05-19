@@ -1,8 +1,9 @@
 import axios from "axios"
+import { BASE_URL } from "../constants"
 
 export const getUserWishList = async (userId: string) => {
   const { data } = await axios.get(
-    `${import.meta.env.VITE_BACKEND_URL}/api/wishlist/${userId}
+    `${BASE_URL}/api/wishlist/${userId}
 `
   )
 
