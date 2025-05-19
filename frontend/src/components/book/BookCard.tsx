@@ -61,7 +61,7 @@ const BookCard = ({
 
       <div className=" text-center flex flex-col items-center space-y-2">
         <h2 className="font-semibold">{title.substr(0, 25)}</h2>
-        <p className="px-2 py-0.5 text-xs bg-red-500 text-white rounded-md w-fit">
+        <p className="px-2 py-0.5 text-xs bg-blue-900/60 text-white rounded-md w-fit">
           {categories ? categories : "not available!"}
         </p>
         <span>{pageCount} pages</span>

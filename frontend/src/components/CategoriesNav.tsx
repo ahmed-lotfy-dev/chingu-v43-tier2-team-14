@@ -21,7 +21,7 @@ const CategoriesNav = () => {
     location.pathname === "/books/category/all"
 
   return (
-    <div className="w-full flex flex-wrap justify-center md:justify-start my-5">
+    <div className="w-full flex flex-wrap justify-center md:justify-start my-5 px-5">
       {booksArr.map((category) => {
         const to = `/books/category/${category}`
         const isActive =
@@ -32,8 +32,8 @@ const CategoriesNav = () => {
             <p
               className={`cat capitalize rounded-md px-3 py-1 m-1 duration-300 ${
                 isActive
-                  ? "bg-red-600 text-white"
-                  : "hover:bg-red-600 hover:text-white"
+                  ? "bg-blue-600 text-white"
+                  : "hover:bg-blue-600 hover:text-white"
               }`}
             >
               {category}
