@@ -2,16 +2,20 @@
 
 ## Overview
 
-Virtual Book App is a modern, full-stack virtual bookstore. Users can search for books, view featured and bestsellers, add books to their wishlist, and authenticate with Google. The app fetches data from the Google Books API and NY Times Best Seller's API.
+Virtual Book App is a modern, full-stack virtual bookstore that provides users with a seamless experience for discovering, searching, and managing their book collections. The application integrates with Google Books API and NY Times Best Sellers API to provide comprehensive book information and recommendations.
 
 ## Features
 
 - Multi-page app with dynamic routing
 - Search books by title and author
+- Filter books by category and language
+- Sort books by various parameters
 - Add books to wishlist
 - Google authentication
-- Responsive design
+- Responsive design for all device sizes
 - View featured and best-selling books
+- Redis caching for improved performance
+- Comprehensive book details view
 
 ## Live Demo
 
@@ -29,6 +33,7 @@ Virtual Book App is a modern, full-stack virtual bookstore. Users can search for
 - [React Router](https://reactrouter.com/)
 - React Hooks
 - React Icons
+- TypeScript
 
 ### Backend
 
@@ -37,6 +42,7 @@ Virtual Book App is a modern, full-stack virtual bookstore. Users can search for
 - [Passport.js](http://www.passportjs.org/) (Google OAuth)
 - Express Session
 - Redis (caching)
+- TypeScript
 
 ## Getting Started
 
@@ -45,6 +51,11 @@ Virtual Book App is a modern, full-stack virtual bookstore. Users can search for
 - [Git](https://git-scm.com)
 - [Node.js](https://nodejs.org/en/download/)
 - [pnpm](https://pnpm.io/) (recommended, or use npm/yarn)
+- MongoDB instance
+- Redis server
+- Google OAuth credentials
+- Google Books API key
+- NY Times API key
 
 ### Setup Instructions
 
@@ -102,7 +113,16 @@ VITE_BACKEND_URL=http://localhost:4000
 
 ## API Usage
 
-The backend exposes several RESTful endpoints. Here are some key routes:
+The backend exposes several RESTful endpoints. Here are the key routes:
+
+### Authentication
+
+- `POST /api/auth/google/callback` — Google OAuth login
+- `POST /api/auth/logout` — Logout user
+- `GET /api/auth/session` — Get current session
+- `GET /api/auth/user` — Get user profile
+
+### Books
 
 - `GET /api/books` — List books (supports query params: category, lang, orderBy, limit, index)
 - `GET /api/books/featured-books` — Get featured books (NY Times)
@@ -114,6 +134,15 @@ The backend exposes several RESTful endpoints. Here are some key routes:
 - `DELETE /api/books/remove-book` — Remove a book from a user's collection
 
 See [API Documentation](https://documenter.getpostman.com/view/18748695/2s93Xx1jjT) for full details and request/response examples.
+
+## Performance Requirements
+
+- API response time < 500ms
+- Page load time < 2 seconds
+- Search results loading < 1 second
+- Support for multiple concurrent users
+- Efficient caching mechanism
+- Optimized database queries
 
 ## Contributing
 

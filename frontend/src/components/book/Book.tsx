@@ -15,9 +15,9 @@ const Book = () => {
     queryKey: ["singleBook", isbn],
     queryFn: () => getSingleBook(isbn as string),
     enabled: !!isbn,
-    staleTime: ONE_DAY * 7,
+    // staleTime: ONE_DAY * 7,
   })
-
+  console.log(isbn)
   if (isLoading) {
     return <Loading />
   }
@@ -29,8 +29,8 @@ const Book = () => {
         <NoContent message="there is no data available at the moment!" />
       ) : (
         <div className="items-start justify-center section-wrapper">
-          <BookImage singleBook={singleBook} />
-          <BookBody singleBook={singleBook} id={isbn!} />
+          <BookImage singleBook={singleBook.volumeInfo} />
+          <BookBody singleBook={singleBook.volumeInfo} id={isbn!} />
         </div>
       )}
     </div>

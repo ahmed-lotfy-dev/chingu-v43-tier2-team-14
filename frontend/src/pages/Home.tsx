@@ -1,5 +1,6 @@
 import CategoriesNav from "../components/CategoriesNav"
 import FeaturedListWrapper from "../components/featured/FeaturedListWrapper"
+
 const Home = () => {
   return (
     <>

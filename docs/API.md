@@ -3,7 +3,7 @@
 ## Base URL
 
 ```
-https://books-app-b.ahmedlotfy.dev
+https://v43-tier2-team14-backend.onrender.com
 ```
 
 ## Authentication
@@ -96,29 +96,32 @@ GET /api/books
 - `category` (optional): Filter by category
 - `lang` (optional): Filter by language
 - `orderBy` (optional): Sort order (e.g., "newest", "oldest")
-- `limit` (optional): Number of results (default: 20)
-- `index` (optional): Pagination offset (default: 0)
+- `limit` (optional): Number of results (default: 10)
+- `page` (optional): Page number for pagination (default: 1)
 
 **Response**
 
 ```json
 {
-  "books": [
+  "items": [
     {
-      "_id": "string",
-      "googleBooksId": "string",
-      "title": "string",
-      "authors": ["string"],
-      "description": "string",
-      "thumbnail": "string",
-      "categories": ["string"],
-      "publishedDate": "string",
-      "pageCount": number,
-      "language": "string"
+      "id": "string",
+      "volumeInfo": {
+        "title": "string",
+        "authors": ["string"],
+        "description": "string",
+        "imageLinks": {
+          "smallThumbnail": "string",
+          "thumbnail": "string"
+        },
+        "categories": ["string"],
+        "publishedDate": "string",
+        "pageCount": number,
+        "language": "string"
+      }
     }
   ],
-  "total": number,
-  "hasMore": boolean
+  "nextCursor": number | null
 }
 ```
 
@@ -132,62 +135,75 @@ GET /api/books/featured-books
 
 ```json
 {
-  "books": [
-    {
-      "_id": "string",
-      "title": "string",
-      "author": "string",
-      "description": "string",
-      "rank": number,
-      "thumbnail": "string"
-    }
-  ]
+  "featuredBooks": {
+    "results": [
+      {
+        "list_name": "string",
+        "display_name": "string",
+        "bestsellers_date": "string",
+        "published_date": "string",
+        "rank": number,
+        "rank_last_week": number,
+        "weeks_on_list": number,
+        "asterisk": number,
+        "dagger": number,
+        "amazon_product_url": "string",
+        "isbns": [
+          {
+            "isbn10": "string",
+            "isbn13": "string"
+          }
+        ],
+        "book_details": [
+          {
+            "title": "string",
+            "description": "string",
+            "contributor": "string",
+            "author": "string",
+            "contributor_note": "string",
+            "price": number,
+            "age_group": "string",
+            "publisher": "string",
+            "primary_isbn13": "string",
+            "primary_isbn10": "string"
+          }
+        ]
+      }
+    ]
+  }
 }
 ```
 
-### Get Single Book
+### Get Book by ISBN
 
 ```http
-GET /api/books/single-book/:title
+GET /api/books/by-isbn/:isbn
 ```
 
 **Response**
 
 ```json
 {
-  "_id": "string",
-  "googleBooksId": "string",
-  "title": "string",
-  "authors": ["string"],
-  "description": "string",
-  "thumbnail": "string",
-  "categories": ["string"],
-  "publishedDate": "string",
-  "pageCount": number,
-  "language": "string"
-}
-```
-
-### Get Book by Google Books ID
-
-```http
-GET /api/books/by-title/:id
-```
-
-**Response**
-
-```json
-{
-  "_id": "string",
-  "googleBooksId": "string",
-  "title": "string",
-  "authors": ["string"],
-  "description": "string",
-  "thumbnail": "string",
-  "categories": ["string"],
-  "publishedDate": "string",
-  "pageCount": number,
-  "language": "string"
+  "book": {
+    "items": [
+      {
+        "id": "string",
+        "volumeInfo": {
+          "title": "string",
+          "authors": ["string"],
+          "description": "string",
+          "imageLinks": {
+            "smallThumbnail": "string",
+            "thumbnail": "string"
+          },
+          "categories": ["string"],
+          "publishedDate": "string",
+          "pageCount": number,
+          "language": "string"
+        }
+      }
+    ]
+  }
 }
 ```
 
@@ -197,35 +213,33 @@ GET /api/books/by-title/:id
 GET /api/books/search-books/:query
 ```
 
-**Query Parameters**
-
-- `limit` (optional): Number of results (default: 20)
-- `index` (optional): Pagination offset (default: 0)
-
 **Response**
 
 ```json
 {
-  "books": [
-    {
-      "_id": "string",
-      "googleBooksId": "string",
-      "title": "string",
-      "authors": ["string"],
-      "description": "string",
-      "thumbnail": "string",
-      "categories": ["string"],
-      "publishedDate": "string",
-      "pageCount": number,
-      "language": "string"
-    }
-  ],
-  "total": number,
-  "hasMore": boolean
+  "message": "Books fetched from API and cached",
+  "books": {
+    "items": [
+      {
+        "id": "string",
+        "volumeInfo": {
+          "title": "string",
+          "authors": ["string"],
+          "description": "string",
+          "imageLinks": {
+            "smallThumbnail": "string",
+            "thumbnail": "string"
+          },
+          "categories": ["string"],
+          "publishedDate": "string",
+          "pageCount": number,
+          "language": "string"
+        }
+      }
+    ]
+  }
 }
 ```
-
-## User Books
 
 ### Get User Books
 
@@ -237,24 +251,26 @@ GET /api/books/get-user-books/:userId
 
 ```json
 {
+  "message": "User Books Fetched Successfully",
   "books": [
     {
-      "_id": "string",
-      "googleBooksId": "string",
+      "id": "string",
+      "userId": "string",
       "title": "string",
-      "authors": ["string"],
-      "description": "string",
-      "thumbnail": "string",
       "categories": ["string"],
-      "publishedDate": "string",
       "pageCount": number,
-      "language": "string"
+      "imageLinks": {
+        "smallThumbnail": "string",
+        "thumbnail": "string"
+      },
+      "description": "string",
+      "authors": ["string"]
     }
   ]
 }
 ```
 
-### Add Book to User Collection
+### Add Book
 
 ```http
 POST /api/books/add-book
@@ -265,7 +281,15 @@ POST /api/books/add-book
 ```json
 {
   "userId": "string",
-  "bookId": "string"
+  "title": "string",
+  "categories": ["string"],
+  "pageCount": number,
+  "imageLinks": {
+    "smallThumbnail": "string",
+    "thumbnail": "string"
+  },
+  "description": "string",
+  "authors": ["string"]
 }
 ```
 
@@ -273,23 +297,24 @@ POST /api/books/add-book
 
 ```json
 {
-  "message": "Book added successfully",
+  "message": "Book Added Successfully",
   "book": {
-    "_id": "string",
-    "googleBooksId": "string",
+    "id": "string",
+    "userId": "string",
     "title": "string",
-    "authors": ["string"],
-    "description": "string",
-    "thumbnail": "string",
     "categories": ["string"],
-    "publishedDate": "string",
     "pageCount": number,
-    "language": "string"
+    "imageLinks": {
+      "smallThumbnail": "string",
+      "thumbnail": "string"
+    },
+    "description": "string",
+    "authors": ["string"]
   }
 }
 ```
 
-### Remove Book from User Collection
+### Remove Book
 
 ```http
 DELETE /api/books/remove-book
@@ -300,7 +325,7 @@ DELETE /api/books/remove-book
 ```json
 {
   "userId": "string",
-  "bookId": "string"
+  "id": "string"
 }
 ```
 
@@ -308,7 +333,7 @@ DELETE /api/books/remove-book
 
 ```json
 {
-  "message": "Book removed successfully"
+  "message": "Book deleted successfully"
 }
 ```
 
@@ -320,35 +345,7 @@ All endpoints may return the following error responses:
 
 ```json
 {
-  "error": {
-    "message": "Invalid request parameters",
-    "code": "BAD_REQUEST",
-    "status": 400
-  }
-}
-```
-
-### 401 Unauthorized
-
-```json
-{
-  "error": {
-    "message": "Authentication required",
-    "code": "UNAUTHORIZED",
-    "status": 401
-  }
-}
-```
-
-### 403 Forbidden
-
-```json
-{
-  "error": {
-    "message": "Access denied",
-    "code": "FORBIDDEN",
-    "status": 403
-  }
+  "message": "Error message describing the issue"
 }
 ```
 
@@ -356,11 +353,7 @@ All endpoints may return the following error responses:
 
 ```json
 {
-  "error": {
-    "message": "Resource not found",
-    "code": "NOT_FOUND",
-    "status": 404
-  }
+  "message": "Resource not found"
 }
 ```
 
@@ -368,69 +361,19 @@ All endpoints may return the following error responses:
 
 ```json
 {
-  "error": {
-    "message": "Internal server error",
-    "code": "SERVER_ERROR",
-    "status": 500
-  }
-}
-```
-
-## Rate Limiting
-
-The API implements rate limiting to prevent abuse. The current limits are:
-
-- 100 requests per minute for authenticated users
-- 20 requests per minute for unauthenticated users
-
-When rate limit is exceeded, the API returns:
-
-```json
-{
-  "error": {
-    "message": "Too many requests",
-    "code": "RATE_LIMIT_EXCEEDED",
-    "status": 429
-  }
+  "message": "Internal server error message"
 }
 ```
 
 ## Caching
 
-The API implements caching for the following endpoints:
+The API implements Redis caching for the following endpoints:
 
-- `GET /api/books/featured-books` (1 hour)
-- `GET /api/books/single-book/:title` (24 hours)
-- `GET /api/books/by-title/:id` (24 hours)
+- `/api/books` - Cached for 24 hours
+- `/api/books/featured-books` - Cached for 1 hour
+- `/api/books/by-isbn/:isbn` - Cached for 7 days
+- `/api/books/search-books/:query` - Cached for 24 hours
 
-Cache headers are included in responses:
+## Rate Limiting
 
-```
-Cache-Control: public, max-age=3600
-ETag: "etag-value"
-```
-
-## Authentication
-
-All authenticated endpoints require a valid session token. The token should be included in the request header:
-
-```
-Authorization: Bearer <token>
-```
-
-## Pagination
-
-Endpoints that return lists of books support pagination using the following query parameters:
-
-- `limit`: Number of items per page (default: 20, max: 50)
-- `index`: Offset for pagination (default: 0)
-
-The response includes pagination metadata:
-
-```json
-{
-  "books": [...],
-  "total": number,
-  "hasMore": boolean
-}
-```
+The API implements rate limiting to prevent abuse. Please contact the development team if you need higher rate limits.

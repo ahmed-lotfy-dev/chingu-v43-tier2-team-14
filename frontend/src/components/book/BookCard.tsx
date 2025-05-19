@@ -1,7 +1,6 @@
 import { Link } from "react-router"
 import { BsBookmarkPlus, BsBookmarkDashFill } from "react-icons/bs"
 import useWishlist from "../../hooks/useWishlist"
-import { Toaster } from "react-hot-toast"
 
 type BookCardProps = {
   id: string
@@ -14,6 +13,10 @@ type BookCardProps = {
     imageLinks?: {
       thumbnail: string
     }
+    industryIdentifiers?: {
+      type: string
+      identifier: string
+    }[]
   }
 }
 
@@ -26,6 +29,7 @@ const BookCard = ({
     authors,
     pageCount,
     imageLinks,
+    industryIdentifiers,
   },
 }: BookCardProps) => {
   const { isAdded, addItemToWishlist } = useWishlist(id, title)
@@ -38,12 +42,13 @@ const BookCard = ({
     imageLinks,
     description,
     authors,
+    industryIdentifiers,
   }
 
   return (
     <article className="flex flex-col justify-between h-full w-full max-w-[250px] border border-slate-300 rounded-md shadow-md bg-white transition-transform duration-300 ease-in-out transform hover:scale-105 hover:-translate-y-1 hover:shadow-xl p-4">
       <figure className="flex cursor-pointer mb-2 mx-auto">
-        <Link to={`/book/${id}`}>
+        <Link to={`/book/${industryIdentifiers?.[0]?.identifier}`}>
           {imageLinks && (
             <img
               src={imageLinks.thumbnail}
@@ -67,7 +72,6 @@ const BookCard = ({
           {!isAdded ? <BsBookmarkPlus /> : <BsBookmarkDashFill />}
         </div>
       </div>
-      <Toaster />
     </article>
   )
 }

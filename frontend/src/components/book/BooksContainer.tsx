@@ -66,6 +66,7 @@ const BooksContainer = () => {
         ref={loadMoreRef}
       >
         {books?.map((book: any, idx: number) => {
+          console.log({ book })
           return (
             <div key={`${book.id}-${idx}`}>
               <BookCard {...book} />

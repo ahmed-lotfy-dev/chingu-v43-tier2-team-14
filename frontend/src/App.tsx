@@ -4,6 +4,7 @@ import Sidebar from "./components/Sidebar"
 import SearchWrapper from "./components/search/SearchWrapper"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import useAuth from "./hooks/useAuth"
+import { Toaster } from "react-hot-toast"
 
 const queryClient = new QueryClient()
 
@@ -22,6 +23,7 @@ const App = () => {
         </div>
         <Footer />
       </main>
+      <Toaster/>
     </QueryClientProvider>
   )
 }
