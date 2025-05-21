@@ -15,7 +15,7 @@ const Book = () => {
     queryKey: ["singleBook", isbn],
     queryFn: () => getSingleBook(isbn as string),
     enabled: !!isbn,
-    // staleTime: ONE_DAY * 7,
+    staleTime: ONE_DAY * 7,
   })
   console.log(isbn)
   if (isLoading) {
