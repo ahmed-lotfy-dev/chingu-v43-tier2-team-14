@@ -1,0 +1,41 @@
+import  { createContext, useContext, useState, type ReactNode } from "react"
+import type { User } from "../types/userType"
+
+type UserContextType = {
+  user: User | null
+  setUser: (user: User) => Promise<void>
+  logout: () => Promise<void>
+}
+
+const UserContext = createContext<UserContextType | undefined>(undefined)
+
+export const UserProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUserState] = useState<User | null>(() => {
+    const stored = localStorage.getItem("user")
+    return stored ? JSON.parse(stored) : null
+  })
+
+  const setUser = async (user: User) => {
+    setUserState(user)
+    localStorage.setItem("user", JSON.stringify(user))
+  }
+
+  const logout = async () => {
+    setUserState(null)
+    localStorage.removeItem("user")
+  }
+
+  return (
+    <UserContext.Provider value={{ user, setUser, logout }}>
+      {children}
+    </UserContext.Provider>
+  )
+}
+
+export const useUser = () => {
+  const context = useContext(UserContext)
+  if (!context) {
+    throw new Error("useUser must be used within a UserProvider")
+  }
+  return context
+}

@@ -1,139 +1,147 @@
-import { create } from "zustand"
-import { devtools } from "zustand/middleware"
-import { persist } from "zustand/middleware"
+// import { BASE_URL } from "../utils/constants"
 
-type BookStoreState = {
-  bookList: any[]
-  wishList: any[]
-  featuredList: any[]
-  getBooks: () => Promise<void>
-  getUserWishlist: () => Promise<void>
-  addToWishlist: (item: any) => void
-  removeFromWishlist: (id: string) => void
-  addBookDb: (userId: string, item: any) => Promise<void>
-  removeBookDb: (userId: string, id: string) => Promise<void>
-  getFeatured: () => Promise<void>
-}
+// type BookStoreState = {
+//   bookList: any[]
+//   wishList: any[]
+//   featuredList: any[]
+//   getBooks: () => Promise<void>
+//   getUserWishlist: () => Promise<void>
+//   addToWishlist: (item: any) => void
+//   removeFromWishlist: (id: string) => void
+//   addBookDb: (userId: string, item: any) => Promise<void>
+//   removeBookDb: (userId: string, id: string) => Promise<void>
+//   getFeatured: () => Promise<void>
+// }
 
-const store = (
-  set: (
-    partial:
-      | Partial<BookStoreState>
-      | ((state: BookStoreState) => Partial<BookStoreState>)
-  ) => void
-): BookStoreState => ({
-  bookList: [],
-  wishList: [],
-  featuredList: [],
-  getBooks: async () => {
-    const url = `/api/books?category=science+fiction`
-    // must add category name for it to work
-    // "http://localhost:4000/api/books?category=science+fiction";
-    // ?category=category name
-    // &limit=40 maximum 40 books
-    // &lang=ar
-    // &orderBy=newest or relevance
+// const store = (
+//   set: (
+//     partial:
+//       | Partial<BookStoreState>
+//       | ((state: BookStoreState) => Partial<BookStoreState>)
+//   ) => void
+// ): BookStoreState => ({
+//   bookList: [],
+//   wishList: [],
+//   featuredList: [],
+//   getBooks: async () => {
+//     const url = `${BASE_URL}/api/books?category=science+fiction`
+//     try {
+//       const response = await fetch(url, {
+//         method: "GET",
+//         credentials: "include",
+//       })
+//       if (!response.ok) {
+//         throw new Error(`HTTP error! status: ${response.status}`)
+//       }
+//       const data = await response.json()
+//       set({ bookList: data.items || [] })
+//     } catch (error) {
+//       console.error("Error fetching books:", error)
+//       set({ bookList: [] })
+//     }
+//   },
 
-    try {
-      const response = await fetch(url, {
-        method: "GET",
-        credentials: "include",
-      })
-      const data = await response.json()
-      set({ bookList: data.categories.items })
-    } catch (error) {
-      console.error(error)
-    }
-  },
+//   getUserWishlist: async () => {
+//     const url = `${BASE_URL}/api/books/get-user-books`
+//     try {
+//       const response = await fetch(url, {
+//         method: "GET",
+//         credentials: "include",
+//       })
+//       if (!response.ok) {
+//         throw new Error(`HTTP error! status: ${response.status}`)
+//       }
+//       const data = await response.json()
+//       set({ wishList: data.books || [] })
+//     } catch (error) {
+//       console.error("Error fetching wishlist:", error)
+//       set({ wishList: [] })
+//     }
+//   },
 
-  // get user wishlist part
-  getUserWishlist: async () => {
-    const url = `${import.meta.env.VITE_BACKEND_URL}/api/books/get-user-books`
+//   addToWishlist: (item: any) =>
+//     set((state) => {
+//       const wishItemExist = state.wishList.some(
+//         (wishItem) => wishItem.id === item.id
+//       )
+//       if (!wishItemExist) {
+//         return {
+//           wishList: [...state.wishList, item],
+//         }
+//       }
+//       return state
+//     }),
 
-    try {
-      const response = await fetch(url, {
-        method: "GET",
-        credentials: "include",
-      })
-      const data = await response.json()
-      console.log(data)
-      set({ wishList: data })
-    } catch (error) {
-      console.error(error)
-    }
-  },
+//   removeFromWishlist: (id) =>
+//     set((state) => ({
+//       wishList: state.wishList.filter((item: any) => item.id !== id),
+//     })),
 
-  addToWishlist: (item: any) =>
-    set((state) => {
-      const wishItemExist = state.wishList.some(
-        (wishItem) => wishItem.id === item.id
-      )
-      if (!wishItemExist) {
-        return {
-          wishList: [...state.wishList, item],
-        }
-      }
-      return state
-    }),
+//   addBookDb: async (userId: string, item: any) => {
+//     const url = `${BASE_URL}/api/books/add-book`
+//     try {
+//       const response = await fetch(url, {
+//         method: "POST",
+//         body: JSON.stringify({ userId: userId, ...item }),
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         credentials: "include",
+//       })
+//       if (!response.ok) {
+//         throw new Error(`HTTP error! status: ${response.status}`)
+//       }
+//     } catch (error) {
+//       console.error("Error adding book:", error)
+//       throw error
+//     }
+//   },
 
-  removeFromWishlist: (id) =>
-    set((state) => ({
-      wishList: state.wishList.filter((item: any) => item.id !== id),
-    })),
+//   removeBookDb: async (userId: string, id: string) => {
+//     const url = `${BASE_URL}/api/books/remove-book`
+//     try {
+//       const response = await fetch(url, {
+//         method: "DELETE",
+//         body: JSON.stringify({ userId, id }),
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         credentials: "include",
+//       })
+//       if (!response.ok) {
+//         throw new Error(`HTTP error! status: ${response.status}`)
+//       }
+//     } catch (error) {
+//       console.error("Error removing book:", error)
+//       throw error
+//     }
+//   },
 
-  addBookDb: async (userId: string, item: any) => {
-    const url = `${import.meta.env.VITE_BACKEND_URL}/api/books/add-book`
-    fetch(url, {
-      method: "post",
-      body: JSON.stringify({ userId: userId, ...item }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-  },
+//   getFeatured: async () => {
+//     try {
+//       const url = `${BASE_URL}/api/books/featured`
+//       const response = await fetch(url, {
+//         method: "GET",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         credentials: "include",
+//       })
 
-  removeBookDb: async (userId, id) => {
-    try {
-      const url = `${import.meta.env.VITE_BACKEND_URL}/api/books/remove-book`
-      fetch(url, {
-        method: "delete",
-        body: JSON.stringify({ userId, id }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-    } catch (error) {
-      console.error(error)
-    }
-  },
+//       if (!response.ok) {
+//         throw new Error(`HTTP error! status: ${response.status}`)
+//       }
 
-  getFeatured: async () => {
-    try {
-      const url = `${import.meta.env.VITE_BACKEND_URL}/api/books/featured-books`
+//       const data = await response.json()
+//       if (!data.featuredBooks?.results) {
+//         throw new Error("Invalid response format")
+//       }
 
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      })
+//       set({ featuredList: data.featuredBooks.results })
+//     } catch (error) {
+//       console.error("Error fetching featured books:", error)
+//       set({ featuredList: [] })
+//     }
+//   },
+// })
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
-
-      const data = await response.json()
-      if (!data.featuredBooks?.results) {
-        throw new Error("Invalid response format")
-      }
-
-      set({ featuredList: data.featuredBooks.results })
-    } catch (error) {
-      console.error("Error fetching featured books:", error)
-      set({ featuredList: [] })
-    }
-  },
-})
-
-export const bookStore = create(persist(devtools(store), { name: "bookStore" }))

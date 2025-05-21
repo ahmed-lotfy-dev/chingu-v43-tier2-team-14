@@ -1,13 +1,13 @@
 //TODO FIX THIS AND CART STORE
 import { Toaster } from "react-hot-toast"
-import useWishlist from "../../hooks/useWishlist"
+// import useWishlist from "../../hooks/useWishlist"
 
-import {
-  BsBookmarkPlus,
-  BsBookmarkDashFill,
-  // BsCartXFill,
-  // BsCartPlusFill,
-} from "react-icons/bs"
+// import {
+//   BsBookmarkPlus,
+//   BsBookmarkDashFill,
+//   // BsCartXFill,
+//   // BsCartPlusFill,
+// } from "react-icons/bs"
 
 // import GenericBtns from "../UI/GenericBtns"
 // import useCart from "../../hooks/useCart"
@@ -25,29 +25,29 @@ type BookBodyProps = {
 }
 
 const BookBody = ({
-  id,
+  // id,
   singleBook: {
     title,
     categories,
     pageCount,
-    imageLinks,
+    // imageLinks,
     description,
     authors,
   },
 }: BookBodyProps) => {
-  const { addItemToWishlist, isAdded } = useWishlist(id, title)
+  // const { addItemToWishlist, isAdded } = useWishlist(id, title)
   // const { addItemToCart, isInCart } = useCart(id, title)
 
-  const item = {
-    id,
-    title,
-    categories,
-    pageCount,
-    image: imageLinks,
-    description,
-    author: authors,
-    // price: saleInfo.amount,
-  }
+  // const item = {
+  //   id,
+  //   title,
+  //   categories,
+  //   pageCount,
+  //   image: imageLinks,
+  //   description,
+  //   author: authors,
+  //   // price: saleInfo.amount,
+  // }
   return (
     <article className="flex flex-col space-y-4">
       {title && (
@@ -87,9 +87,9 @@ const BookBody = ({
         <div className="flex items-center space-x-4">
           <div
             className="flex justify-center w-12 p-3 mx-auto text-xl duration-300 cursor-pointer text-text-btn hover:text-text-main"
-            onClick={() => addItemToWishlist(item)}
+            // onClick={() => addItemToWishlist(item)}
           >
-            {!isAdded ? <BsBookmarkPlus /> : <BsBookmarkDashFill />}
+            {/* {!isAdded ? <BsBookmarkPlus /> : <BsBookmarkDashFill />} */}
           </div>
         </div>
       </div>

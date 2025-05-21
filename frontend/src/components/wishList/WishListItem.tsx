@@ -1,7 +1,6 @@
 import React from "react"
 import { BsBookmarkDashFill } from "react-icons/bs"
-import { bookStore } from "../../features/bookStore"
-import toast, { Toaster } from "react-hot-toast"
+// import toast, { Toaster } from "react-hot-toast"
 import { Link } from "react-router"
 
 interface WishListItemProps {
@@ -25,16 +24,13 @@ const WishListItem: React.FC<WishListItemProps> = ({
   // description,
   imageLinks,
 }) => {
-  const removeFromWishlist = bookStore((state) => state.removeFromWishlist)
-
-  const removeItemFromWishlist = (id: string) => {
-    if (removeFromWishlist) {
-      removeFromWishlist(id)
-      toast.error(`${title} has been removed from your wish list`, {
-        position: "top-right",
-      })
-    }
-  }
+  // const removeItemFromWishlist = (id: string) => {
+  // if (removeFromWishlist) {
+  //   toast.error(`${title} has been removed from your wish list`, {
+  //     position: "top-right",
+  //   })
+  // }
+  // }
 
   return (
     <article className="w-3/4 xl:w-1/2 mx-auto shadow-md bg-zinc-100 flex flex-col md:flex-row justify-center md:justify-around items-center my-6 py-4 md:p-4 space-x-4 border-2 rounded-md hover:shadow-sm">
@@ -58,11 +54,10 @@ const WishListItem: React.FC<WishListItemProps> = ({
       </div>
       <div
         className="cursor-pointer text-2xl p-4 duration-300 self-end hover:text-slate-600"
-        onClick={() => removeItemFromWishlist(id)}
+        // onClick={() => removeItemFromWishlist(id)}
       >
         <BsBookmarkDashFill />
       </div>
-      <Toaster />
     </article>
   )
 }

@@ -5,6 +5,7 @@ import SearchWrapper from "./components/search/SearchWrapper"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import useAuth from "./hooks/useAuth"
 import { Toaster } from "react-hot-toast"
+import { UserProvider } from "./providers/userProvider"
 
 const queryClient = new QueryClient()
 
@@ -13,17 +14,19 @@ const App = () => {
   console.log(user)
   return (
     <QueryClientProvider client={queryClient}>
-      <main className="bg-gray-50 min-h-screen flex flex-col">
-        <div className="flex flex-1">
-          <Sidebar />
-          <div className="flex-1 overflow-x-hidden">
-            <SearchWrapper />
-            <Outlet />
+      <UserProvider>
+        <main className="bg-gray-50 min-h-screen flex flex-col">
+          <div className="flex flex-1">
+            <Sidebar />
+            <div className="flex-1 overflow-x-hidden">
+              <SearchWrapper />
+              <Outlet />
+            </div>
           </div>
-        </div>
-        <Footer />
-      </main>
-      <Toaster/>
+          <Footer />
+        </main>
+      </UserProvider>
+      <Toaster />
     </QueryClientProvider>
   )
 }

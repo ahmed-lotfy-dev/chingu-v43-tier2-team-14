@@ -1,6 +1,6 @@
 import { Link } from "react-router"
-import { BsBookmarkPlus, BsBookmarkDashFill } from "react-icons/bs"
-import useWishlist from "../../hooks/useWishlist"
+// import { BsBookmarkPlus, BsBookmarkDashFill } from "react-icons/bs"
+// import useWishlist from "../../hooks/useWishlist"
 
 type BookCardProps = {
   id: string
@@ -21,29 +21,29 @@ type BookCardProps = {
 }
 
 const BookCard = ({
-  id,
+  // id,
   volumeInfo: {
     title,
     categories,
-    description,
-    authors,
+    // description,
+    // authors,
     pageCount,
     imageLinks,
     industryIdentifiers,
   },
 }: BookCardProps) => {
-  const { isAdded, addItemToWishlist } = useWishlist(id, title)
+  // const { isAdded, addItemToWishlist } = useWishlist(id, title)
 
-  const item = {
-    id,
-    title,
-    categories,
-    pageCount,
-    imageLinks,
-    description,
-    authors,
-    industryIdentifiers,
-  }
+  // const item = {
+  //   id,
+  //   title,
+  //   categories,
+  //   pageCount,
+  //   imageLinks,
+  //   description,
+  //   authors,
+  //   industryIdentifiers,
+  // }
 
   return (
     <article className="flex flex-col justify-between h-full w-full max-w-[250px] border border-slate-300 rounded-md shadow-md bg-white transition-transform duration-300 ease-in-out transform hover:scale-105 hover:-translate-y-1 hover:shadow-xl p-4">
@@ -67,9 +67,9 @@ const BookCard = ({
         <span>{pageCount} pages</span>
         <div
           className="p-3 text-xl flex justify-center w-12 mx-auto cursor-pointer duration-300 text-text-btn hover:text-text-main"
-          onClick={() => addItemToWishlist(item)}
+          // onClick={() => addItemToWishlist(item)}
         >
-          {!isAdded ? <BsBookmarkPlus /> : <BsBookmarkDashFill />}
+          {/* {!isAdded ? <BsBookmarkPlus /> : <BsBookmarkDashFill />} */}
         </div>
       </div>
     </article>
