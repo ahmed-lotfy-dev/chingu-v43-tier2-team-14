@@ -1,5 +1,5 @@
 import axios from "axios"
-import { BASE_URL } from "../constants"
+import { BASE_URL } from "../constants/constants"
 
 export const getCategoryBooks = async (category: string, page: number) => {
   const { data } = await axios.get(

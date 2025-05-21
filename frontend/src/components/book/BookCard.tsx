@@ -1,24 +1,10 @@
 import { Link } from "react-router"
+import type { GoogleBook } from "../../types/googleBookType"
 // import { BsBookmarkPlus, BsBookmarkDashFill } from "react-icons/bs"
 // import useWishlist from "../../hooks/useWishlist"
 
-type BookCardProps = {
-  id: string
-  volumeInfo: {
-    title: string
-    categories?: string
-    description?: string
-    authors?: string[]
-    pageCount?: number
-    imageLinks?: {
-      thumbnail: string
-    }
-    industryIdentifiers?: {
-      type: string
-      identifier: string
-    }[]
-  }
-}
+type BookCardProps = GoogleBook
+
 
 const BookCard = ({
   // id,
@@ -62,7 +48,7 @@ const BookCard = ({
       <div className=" text-center flex flex-col items-center space-y-2">
         <h2 className="font-semibold">{title.substr(0, 25)}</h2>
         <p className="px-2 py-0.5 text-xs bg-blue-900/60 text-white rounded-md w-fit">
-          {categories ? categories : "not available!"}
+          {categories?.join(", ") || "not available!"}
         </p>
         <span>{pageCount} pages</span>
         <div

@@ -1,4 +1,6 @@
+import type { User } from "./userType"
+
 export type AuthResponse = {
-  data?: any
+  data?: { user: User | null }
   error?: { message: string } | string
 }

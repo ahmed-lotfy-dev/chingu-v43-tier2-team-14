@@ -3,6 +3,7 @@ import { authClient } from "../../utils/auth-client"
 import toast from "react-hot-toast"
 import { Link, useNavigate } from "react-router"
 import type { AuthResponse } from "../../types/authResponse"
+import type { CustomError } from "../../types/customError"
 
 export default function SignUpComponent() {
   const [name, setName] = useState("")
@@ -38,9 +39,11 @@ export default function SignUpComponent() {
         })
         console.error("Signup error:", data.error)
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as CustomError
+
       const errorMessage =
-        err?.message || err?.data?.error?.message || "Something went wrong"
+        error.message || error.data?.error?.message || "Something went wrong"
       toast.error(errorMessage, {
         position: "top-right",
         className: "mr-4 mt-12",

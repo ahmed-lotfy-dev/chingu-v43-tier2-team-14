@@ -3,7 +3,7 @@ import FeaturedList from "./FeaturedList"
 import { getFeaturedBooks } from "../../utils/api/featuredBooksApi"
 import NoContent from "../NoContent"
 import Loading from "../UI/Loading"
-import { ONE_DAY } from "../../utils/constants"
+import { ONE_DAY } from "../../utils/constants/constants"
 
 interface Book {
   title: string

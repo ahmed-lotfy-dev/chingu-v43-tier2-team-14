@@ -4,7 +4,7 @@ import BookImage from "../book/BookImage"
 import Loading from "../UI/Loading"
 import { useQuery } from "@tanstack/react-query"
 import { getSingleBook } from "../../utils/api/singleBookApi"
-import { ONE_DAY } from "../../utils/constants"
+import { ONE_DAY } from "../../utils/constants/constants"
 
 const FeaturedSingleBook = () => {
   const { isbn } = useParams()

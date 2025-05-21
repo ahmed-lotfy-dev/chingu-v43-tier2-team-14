@@ -37,7 +37,7 @@ app.use(
       }
     },
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    credentials: true, // <- this is required
+    credentials: true,
   })
 )
 

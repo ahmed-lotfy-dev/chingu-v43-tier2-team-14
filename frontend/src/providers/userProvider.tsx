@@ -1,4 +1,4 @@
-import  { createContext, useContext, useState, type ReactNode } from "react"
+import { createContext, useState, type ReactNode } from "react"
 import type { User } from "../types/userType"
 
 type UserContextType = {
@@ -32,10 +32,4 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   )
 }
 
-export const useUser = () => {
-  const context = useContext(UserContext)
-  if (!context) {
-    throw new Error("useUser must be used within a UserProvider")
-  }
-  return context
-}
+export { UserContext }

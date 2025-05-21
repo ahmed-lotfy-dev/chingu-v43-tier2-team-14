@@ -1,18 +1,6 @@
 import { NavLink, useLocation } from "react-router"
 
-export const booksArr = [
-  "all",
-  "action",
-  "adventure",
-  "classics",
-  "comic",
-  "graphic",
-  "mystery",
-  "horror",
-  "romance",
-  "sci-fi",
-  "suspense",
-]
+import { booksArr } from "../utils/constants/booksCategories"
 
 const CategoriesNav = () => {
   const location = useLocation()

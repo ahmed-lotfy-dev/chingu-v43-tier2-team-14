@@ -1,5 +1,5 @@
 import axios from "axios"
-import { BASE_URL } from "../constants"
+import { BASE_URL } from "../constants/constants"
 
 export const getSingleBook = async (isbn: string) => {
   const { data } = await axios.get(

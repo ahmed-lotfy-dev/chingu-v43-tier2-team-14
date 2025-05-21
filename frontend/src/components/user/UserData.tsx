@@ -1,9 +1,7 @@
-import { useEffect } from "react"
 import useAuth from "../../hooks/useAuth"
 
 const Userdata = () => {
   const { user } = useAuth()
-  useEffect(() => {}, [user])
   return (
     <div className="hidden md:flex justify-center items-center gap-2">
       <img

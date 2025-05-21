@@ -3,6 +3,7 @@ import { useParams } from "react-router"
 import BookCard from "./BookCard"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { getCategoryBooks } from "../../utils/api/categoryBooksApi"
+import type { GoogleBook } from "../../types/googleBookType"
 
 const BooksContainer = () => {
   const { category } = useParams()
@@ -26,6 +27,7 @@ const BooksContainer = () => {
   })
 
   useEffect(() => {
+    const observerTarget = loadMoreRef.current
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
@@ -35,13 +37,13 @@ const BooksContainer = () => {
       { threshold: 1 }
     )
 
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current)
+    if (observerTarget) {
+      observer.observe(observerTarget)
     }
 
     return () => {
-      if (loadMoreRef.current) {
-        observer.unobserve(loadMoreRef.current)
+      if (observerTarget) {
+        observer.unobserve(observerTarget)
       }
     }
   }, [hasNextPage, isFetchingNextPage, fetchNextPage])
@@ -65,7 +67,7 @@ const BooksContainer = () => {
         className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-5 px-4 py-8 max-w-screen-xl mx-auto justify-items-stretch"
         ref={loadMoreRef}
       >
-        {books?.map((book: any, idx: number) => {
+        {books?.map((book: GoogleBook, idx: number) => {
           console.log({ book })
           return (
             <div key={`${book.id}-${idx}`}>
@@ -78,8 +80,6 @@ const BooksContainer = () => {
       {isFetchingNextPage && (
         <div className="text-center py-4">Loading more books...</div>
       )}
-
-      <div ref={loadMoreRef} className="h-5" />
     </section>
   )
 }

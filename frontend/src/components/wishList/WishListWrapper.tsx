@@ -4,6 +4,7 @@ import WishEmpty from "./WishEmpty"
 import { useQuery } from "@tanstack/react-query"
 import useAuth from "../../hooks/useAuth"
 import { getUserWishList } from "../../utils/api/userWishListApi"
+import type { GoogleBook } from "../../types/googleBookType"
 
 const WishListWrapper = () => {
   const { user } = useAuth()
@@ -19,8 +20,8 @@ const WishListWrapper = () => {
         <h2 className="text-4xl capitalize font-bold ">wishlist</h2>
         <p>You have {userWishList.length} items in your list!</p>
         {userWishList.length > 0 ? (
-          userWishList.map((wishItem: any) => (
-            <WishListItem key={wishItem.id} {...wishItem} />
+          userWishList.map((wishItem: GoogleBook) => (
+            <WishListItem key={wishItem.id} book={wishItem} />
           ))
         ) : (
           <>

@@ -3,6 +3,7 @@ import { authClient } from "../../utils/auth-client"
 import { Link } from "react-router"
 import toast, { Toaster } from "react-hot-toast"
 import type { AuthResponse } from "../../types/authResponse"
+import type { CustomError } from "../../types/customError"
 
 export default function SignInComponent() {
   const [email, setEmail] = useState("")
@@ -30,10 +31,15 @@ export default function SignInComponent() {
         })
         console.error(data.error)
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as CustomError
+
       const errorMessage =
-        err?.message || err?.data?.error?.message || "Something went wrong"
-      toast.error(errorMessage)
+        error.message || error.data?.error?.message || "Something went wrong"
+      toast.error(errorMessage, {
+        position: "top-right",
+        className: "mr-4 mt-12",
+      })
       console.error("Email login failed:", err)
     }
   }

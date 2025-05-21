@@ -1,11 +1,12 @@
+import type { User } from "../types/userType"
 import { authClient } from "../utils/auth-client"
 
 const useAuth = () => {
-  const { data: user, isPending, error } = authClient.useSession()
+  const { data, isPending, error } = authClient.useSession()
 
   return {
-    user: user ?? null,
-    isAuthenticated: !!user,
+    user: data?.user as User,
+    isAuthenticated: !!data?.user,
     isLoading: isPending,
     error,
   }
