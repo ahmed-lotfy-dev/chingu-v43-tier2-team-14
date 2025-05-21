@@ -27,16 +27,6 @@ export default function SignUpComponent() {
         })
         navigate("/user")
         console.log("Signup data:", data)
-      } else {
-        const errorMessage =
-          typeof data.error === "string"
-            ? data.error
-            : data.error?.message || "Sign up failed"
-        toast.error(errorMessage, {
-          position: "top-right",
-          className: "mr-4 mt-12",
-        })
-        console.error("Signup error:", data.error)
       }
     } catch (err: unknown) {
       const error = err as CustomError

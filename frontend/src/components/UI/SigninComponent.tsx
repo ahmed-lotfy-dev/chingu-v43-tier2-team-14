@@ -11,24 +11,14 @@ export default function SignInComponent() {
   const handleSignInWithEmail = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const data = (await authClient.signIn.email({
+      const data = await authClient.signIn.email({
         email,
         password,
-      }))
+      })
 
       if (data.data) {
         toast.success("Logged in successfully")
         console.log(data)
-      } else {
-        const errorMessage =
-          typeof data.error === "string"
-            ? data.error
-            : data.error?.message || "Login failed"
-        toast.error(errorMessage, {
-          position: "top-right",
-          className: "mr-4 mt-12",
-        })
-        console.error(data.error)
       }
     } catch (err: unknown) {
       const error = err as CustomError
