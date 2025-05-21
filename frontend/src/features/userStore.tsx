@@ -1,12 +1,6 @@
 import { create } from "zustand"
 import { authClient } from "../utils/auth-client"
-
-type User = {
-  id: string
-  name: string
-  email: string
-  image: string
-}
+import type { User } from "../types/userType"
 
 type UserStore = {
   user: User | null
