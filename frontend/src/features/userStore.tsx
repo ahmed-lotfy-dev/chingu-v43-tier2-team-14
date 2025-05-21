@@ -14,7 +14,7 @@ type UserStore = {
   logout: () => Promise<void>
 }
 
-const store = (set: (partial: Partial<UserStore>) => void): UserStore => ({
+export const userStore = create<UserStore>((set) => ({
   user: null,
   setUser: async (user: any) => {
     set({ user: user })
@@ -23,6 +23,4 @@ const store = (set: (partial: Partial<UserStore>) => void): UserStore => ({
     set({ user: null })
     await authClient.logout()
   },
-})
-
-export const userStore = create(store)
+}))

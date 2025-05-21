@@ -2,6 +2,7 @@ import { useState } from "react"
 import { authClient } from "../../utils/auth-client"
 import toast from "react-hot-toast"
 import { Link, useNavigate } from "react-router"
+import type { AuthResponse } from "../../types/authResponse"
 
 export default function SignUpComponent() {
   const [name, setName] = useState("")
@@ -13,11 +14,11 @@ export default function SignUpComponent() {
     e.preventDefault()
 
     try {
-      const data = await authClient.signUp.email({
+      const data = (await authClient.signUp.email({
         name,
         email,
         password,
-      })
+      })) as AuthResponse
 
       if (data.data) {
         toast.success("Successfully signed up!", {

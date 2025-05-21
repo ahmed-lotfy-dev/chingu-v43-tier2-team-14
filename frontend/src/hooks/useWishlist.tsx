@@ -2,16 +2,12 @@ import { useState } from "react"
 import { bookStore } from "../features/bookStore"
 import { userStore } from "../features/userStore"
 import toast from "react-hot-toast"
+import type { User } from "../types/userType"
 
 // Define types for wishlist item and user
 type WishlistItem = {
   id: string
   title: string
-  [key: string]: any
-}
-
-type User = {
-  _id: string
   [key: string]: any
 }
 
@@ -49,15 +45,15 @@ const useWishlist = (id: string, title: string) => {
   const addItemToWishlist = (item: WishlistItem) => {
     if (!isOnWishlist(id)) {
       addToWishlist && addToWishlist(item)
-      if (user && user._id && addBookDb) {
-        addBookDb(user._id, item)
+      if (user && user.id && addBookDb) {
+        addBookDb(user.id, item)
       }
       alertAdd(title)
       setIsAdded(true)
     } else {
       removeFromWishlist && removeFromWishlist(id)
-      if (user && user._id && removeBookDb) {
-        removeBookDb(user._id, id)
+      if (user && user.id && removeBookDb) {
+        removeBookDb(user.id, id)
       }
       alertRemove(title)
       setIsAdded(false)

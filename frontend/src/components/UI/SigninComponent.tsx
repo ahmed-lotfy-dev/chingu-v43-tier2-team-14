@@ -2,6 +2,7 @@ import { useState } from "react"
 import { authClient } from "../../utils/auth-client"
 import { Link } from "react-router"
 import toast, { Toaster } from "react-hot-toast"
+import type { AuthResponse } from "../../types/authResponse"
 
 export default function SignInComponent() {
   const [email, setEmail] = useState("")
@@ -10,10 +11,10 @@ export default function SignInComponent() {
   const handleSignInWithEmail = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const data = await authClient.signIn.email({
+      const data = (await authClient.signIn.email({
         email,
         password,
-      })
+      })) as AuthResponse
 
       if (data.data) {
         toast.success("Logged in successfully")
