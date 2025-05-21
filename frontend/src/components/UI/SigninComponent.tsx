@@ -2,7 +2,6 @@ import { useState } from "react"
 import { authClient } from "../../utils/auth-client"
 import { Link } from "react-router"
 import toast, { Toaster } from "react-hot-toast"
-import type { AuthResponse } from "../../types/authResponse"
 import type { CustomError } from "../../types/customError"
 
 export default function SignInComponent() {
@@ -15,7 +14,7 @@ export default function SignInComponent() {
       const data = (await authClient.signIn.email({
         email,
         password,
-      })) as AuthResponse
+      }))
 
       if (data.data) {
         toast.success("Logged in successfully")
