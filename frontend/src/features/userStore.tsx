@@ -1,5 +1,4 @@
 import { create } from "zustand"
-import { authClient } from "../utils/auth-client"
 import type { User } from "../types/userType"
 
 type UserStore = {
@@ -15,6 +14,5 @@ export const userStore = create<UserStore>((set) => ({
   },
   logout: async () => {
     set({ user: null })
-    await authClient.logout()
   },
 }))
