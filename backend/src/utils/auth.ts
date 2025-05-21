@@ -23,3 +23,5 @@ export const auth = betterAuth({
     "https://books-app-f.ahmedlotfy.dev",
   ],
 })
+
+type Session = typeof auth.$Infer.Session
