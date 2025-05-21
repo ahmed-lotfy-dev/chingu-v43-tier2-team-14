@@ -3,7 +3,13 @@ import { BASE_URL } from "../constants"
 
 export const getCategoryBooks = async (category: string, page: number) => {
   const { data } = await axios.get(
-    `${BASE_URL}/api/books?category=${category}&lang=en&page=${page}`
+    `${BASE_URL}/api/books?category=${category}&lang=en&page=${page}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    }
   )
 
   return {

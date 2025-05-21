@@ -16,7 +16,11 @@ type BookStoreState = {
 }
 
 const store = (
-  set: (partial: Partial<BookStoreState> | ((state: BookStoreState) => Partial<BookStoreState>)) => void
+  set: (
+    partial:
+      | Partial<BookStoreState>
+      | ((state: BookStoreState) => Partial<BookStoreState>)
+  ) => void
 ): BookStoreState => ({
   bookList: [],
   wishList: [],
@@ -112,13 +116,22 @@ const store = (
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
       })
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
       const data = await response.json()
-      console.log(data.featuredBooks.results)
+      if (!data.featuredBooks?.results) {
+        throw new Error("Invalid response format")
+      }
+
       set({ featuredList: data.featuredBooks.results })
     } catch (error) {
-      console.error(error)
+      console.error("Error fetching featured books:", error)
+      set({ featuredList: [] })
     }
   },
 })
