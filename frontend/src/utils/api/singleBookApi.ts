@@ -6,6 +6,6 @@ export const getSingleBook = async (isbn: string) => {
     `${BASE_URL}/api/books/by-isbn/${isbn}
 `
   )
-
+  console.log(BASE_URL)
   return data.book.items[0]
 }
