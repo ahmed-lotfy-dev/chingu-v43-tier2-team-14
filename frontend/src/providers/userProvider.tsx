@@ -23,7 +23,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     setUserState(null)
-    await authClient.logout()
+    await authClient.signOut()
     localStorage.removeItem("user")
   }
 
