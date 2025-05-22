@@ -20,7 +20,7 @@ export const auth = betterAuth({
   },
   trustedOrigins: [
     "http://localhost:3000",
-    "https://books-app-f.ahmedlotfy.dev",
+    "http://books-app-f.ahmedlotfy.dev",
   ],
 })
 

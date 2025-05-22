@@ -27,7 +27,7 @@ app.use(
     origin: function (origin, callback) {
       const allowedOrigins = [
         "http://localhost:3000",
-        "https://books-app-f.ahmedlotfy.dev",
+        "http://books-app-f.ahmedlotfy.dev",
       ]
 
       if (!origin || allowedOrigins.includes(origin)) {
