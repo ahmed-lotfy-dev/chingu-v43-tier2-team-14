@@ -1,6 +1,6 @@
 import { Router } from "express"
-import { db } from "../db"
-import { userBook } from "../db/schema"
+import { db } from "../db/index.js"
+import { userBook } from "../db/schema.js"
 import { eq, and } from "drizzle-orm"
 
 const wishlistRouter = Router()

@@ -13,7 +13,7 @@ import { PORT, APP_HOME } from "./utils/secrets.js"
 import userRouter from "./routes/user.js"
 import booksRouter from "./routes/books.js"
 import cartRouter from "./routes/cart.js"
-import wishlistRouter from "./routes/wishlist"
+import wishlistRouter from "./routes/wishlist.js"
 
 import { authMiddleware } from "./utils/authMiddleware.js"
 import { requestLogger, errorLogger } from "./utils/loggerMiddleware"
@@ -24,7 +24,7 @@ const port = PORT || 4000
 
 app.use(
   cors({
-    origin:process.env.APP_HOME,
+    origin: process.env.APP_HOME,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   })

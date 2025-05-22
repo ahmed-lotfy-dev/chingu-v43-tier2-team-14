@@ -122,8 +122,8 @@ export const userBooks = pgTable("user_books", {
 
 ```typescript
 // Example of database operations using Drizzle
-import { db } from "./db"
-import { users, books, userBooks } from "./schema"
+import { db } from "../db/index.js"
+import { users, books, userBooks } from "./schema.js"
 import { eq } from "drizzle-orm"
 
 // Query example

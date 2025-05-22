@@ -9,25 +9,14 @@ import { PORT } from "./utils/secrets.js";
 import userRouter from "./routes/user.js";
 import booksRouter from "./routes/books.js";
 import cartRouter from "./routes/cart.js";
-import wishlistRouter from "./routes/wishlist";
+import wishlistRouter from "./routes/wishlist.js";
 import { authMiddleware } from "./utils/authMiddleware.js";
 const app = express();
 const port = PORT || 4000;
 app.use(cors({
-    origin: function (origin, callback) {
-        const allowedOrigins = [
-            "http://localhost:3000",
-            "https://books-app-f.ahmedlotfy.dev",
-        ];
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        }
-        else {
-            callback(new Error("Not allowed by CORS"));
-        }
-    },
+    origin: process.env.APP_HOME,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    credentials: true, // <- this is required
+    credentials: true,
 }));
 // Logger middleware with Winston
 // app.use(requestLogger)
