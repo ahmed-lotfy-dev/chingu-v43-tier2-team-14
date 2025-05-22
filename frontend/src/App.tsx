@@ -10,6 +10,7 @@ import { UserProvider } from "./providers/userProvider"
 const queryClient = new QueryClient()
 
 const App = () => {
+  console.log(import.meta.env.VITE_BACKEND_URL)
   const { user } = useAuth()
   console.log(user)
   return (
