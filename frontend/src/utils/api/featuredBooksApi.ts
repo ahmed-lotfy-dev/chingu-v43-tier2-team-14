@@ -1,9 +1,9 @@
 import axios from "axios"
-// import { BASE_URL } from "../constants/constants"
+import { BASE_URL } from "../constants/constants"
 
 export const getFeaturedBooks = async () => {
   try {
-    const { data } = await axios.get(`/api/books/featured`, {
+    const { data } = await axios.get(`${BASE_URL}/api/books/featured`, {
       headers: {
         "Content-Type": "application/json",
       },

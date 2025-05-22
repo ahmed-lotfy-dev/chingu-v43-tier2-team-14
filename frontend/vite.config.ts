@@ -8,10 +8,10 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      "/api": {
+      "/server": {
         target: "http://books-app-b.ahmedlotfy.dev",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        rewrite: (path) => path.replace(/^\/server/, ""),
       },
     },
   },

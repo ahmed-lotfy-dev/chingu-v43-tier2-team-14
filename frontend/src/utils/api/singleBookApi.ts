@@ -1,9 +1,9 @@
 import axios from "axios"
-// import { BASE_URL } from "../constants/constants"
+import { BASE_URL } from "../constants/constants"
 
 export const getSingleBook = async (isbn: string) => {
   const { data } = await axios.get(
-    `/api/books/by-isbn/${isbn}
+    `${BASE_URL}/api/books/by-isbn/${isbn}
 `,
     {
       headers: {
@@ -12,5 +12,6 @@ export const getSingleBook = async (isbn: string) => {
       withCredentials: true,
     }
   )
+  console.log(BASE_URL)
   return data.book.items[0]
 }

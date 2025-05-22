@@ -24,18 +24,7 @@ const port = PORT || 4000
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      const allowedOrigins = [
-        "http://localhost:3000",
-        "http://books-app-f.ahmedlotfy.dev",
-      ]
-
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true)
-      } else {
-        callback(new Error("Not allowed by CORS"))
-      }
-    },
+    origin: APP_HOME,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   })
