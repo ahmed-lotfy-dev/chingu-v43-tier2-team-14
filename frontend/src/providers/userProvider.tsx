@@ -1,6 +1,7 @@
 import { createContext, useState, type ReactNode } from "react"
 import type { User } from "../types/userType"
 import { authClient } from "../utils/auth-client"
+import { useNavigate } from "react-router"
 
 type UserContextType = {
   user: User | null
@@ -11,6 +12,7 @@ type UserContextType = {
 const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
+  const navigate = useNavigate()
   const [user, setUserState] = useState<User | null>(() => {
     const stored = localStorage.getItem("user")
     return stored ? JSON.parse(stored) : null
@@ -23,7 +25,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     setUserState(null)
-    await authClient.signOut()
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          navigate("/login")
+        },
+      },
+    })
     localStorage.removeItem("user")
   }
 
