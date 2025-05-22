@@ -1,5 +1,6 @@
 import { createContext, useState, type ReactNode } from "react"
 import type { User } from "../types/userType"
+import { authClient } from "../utils/auth-client"
 
 type UserContextType = {
   user: User | null
@@ -22,6 +23,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     setUserState(null)
+    await authClient.logout()
     localStorage.removeItem("user")
   }
 
