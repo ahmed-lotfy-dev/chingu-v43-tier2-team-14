@@ -24,7 +24,10 @@ const port = PORT || 4000
 
 app.use(
   cors({
-    origin: APP_HOME,
+    origin:
+      process.env.NODE_ENV === "development"
+        ? "https://localhost:3000"
+        : "https:books-app.ahmedlotfy.dev",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   })
