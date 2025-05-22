@@ -1,9 +1,9 @@
 import axios from "axios"
-import { BASE_URL } from "../constants/constants"
+// import { BASE_URL } from "../constants/constants"
 
 export const getUserWishList = async (userId: string) => {
   const { data } = await axios.get(
-    `${BASE_URL}/api/wishlist/${userId}
+    `/api/wishlist/${userId}
 `,
     {
       headers: {
