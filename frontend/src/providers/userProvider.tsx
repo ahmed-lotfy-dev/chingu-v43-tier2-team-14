@@ -28,7 +28,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          navigate("/login")
+          navigate("/")
         },
       },
     })
