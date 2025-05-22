@@ -18,10 +18,7 @@ export const auth = betterAuth({
       redirectURI: process.env.REDIRECT_CALLBACK_URL,
     },
   },
-  trustedOrigins: [
-    "http://localhost:3000",
-    "http://books-app-f.ahmedlotfy.dev",
-  ],
+  trustedOrigins: ["http://localhost:3000", "https://books-app.ahmedlotfy.dev"],
 })
 
 type Session = typeof auth.$Infer.Session
