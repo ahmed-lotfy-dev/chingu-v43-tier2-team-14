@@ -5,6 +5,15 @@ import type { GoogleBook } from "../../types/googleBookType"
 
 type BookCardProps = GoogleBook
 
+const getValidIsbnOrTitle = (
+  title: string,
+  identifiers?: { type: string; identifier: string }[]
+) => {
+  if (!identifiers) return encodeURIComponent(title) // fallback to title
+  const isbn13 = identifiers.find((id) => id.type === "ISBN_13")
+  const isbn10 = identifiers.find((id) => id.type === "ISBN_10")
+  return isbn13?.identifier || isbn10?.identifier || encodeURIComponent(title)
+}
 
 const BookCard = ({
   // id,
@@ -18,6 +27,7 @@ const BookCard = ({
     industryIdentifiers,
   },
 }: BookCardProps) => {
+  const isbnOrTitle = getValidIsbnOrTitle(title, industryIdentifiers)
   // const { isAdded, addItemToWishlist } = useWishlist(id, title)
 
   // const item = {
@@ -34,7 +44,7 @@ const BookCard = ({
   return (
     <article className="flex flex-col justify-between h-full w-full max-w-[250px] border border-slate-300 rounded-md shadow-md bg-white transition-transform duration-300 ease-in-out transform hover:scale-105 hover:-translate-y-1 hover:shadow-xl p-4">
       <figure className="flex cursor-pointer mb-2 mx-auto">
-        <Link to={`/book/${industryIdentifiers?.[0]?.identifier}`}>
+        <Link to={`/book/${isbnOrTitle}`}>
           {imageLinks && (
             <img
               src={imageLinks.thumbnail}

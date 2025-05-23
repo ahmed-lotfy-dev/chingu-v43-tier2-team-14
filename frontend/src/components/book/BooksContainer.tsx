@@ -60,7 +60,7 @@ const BooksContainer = () => {
 
   console.log(data)
   const books = data?.pages.flatMap((page) => page.items || [])
-
+  console.log(books)
   return (
     <section className="w-full">
       <div
