@@ -31,7 +31,7 @@ const FeaturedSingleBook = () => {
       ) : (
         <div className="items-start justify-center section-wrapper">
           <BookImage singleBook={singleBook.volumeInfo} />
-          <BookBody singleBook={singleBook.volumeInfo} id={singleBook.id} />
+          <BookBody singleBook={singleBook} />
         </div>
       )}
     </div>

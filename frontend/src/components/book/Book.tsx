@@ -30,7 +30,7 @@ const Book = () => {
       ) : (
         <div className="items-start justify-center section-wrapper">
           <BookImage singleBook={singleBook.volumeInfo} />
-          <BookBody singleBook={singleBook.volumeInfo} id={isbn!} />
+          <BookBody singleBook={singleBook.volumeInfo} />
         </div>
       )}
     </div>

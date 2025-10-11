@@ -13,7 +13,6 @@ import {
 import GenericBtns from "../UI/GenericBtns"
 import useCartStore from "../../features/cartStore"
 import type { GoogleBook } from "../../types/googleBookType"
-import useAuth from "../../hooks/useAuth"
 
 type BookBodyProps = {
   singleBook: GoogleBook // Accept the full GoogleBook object

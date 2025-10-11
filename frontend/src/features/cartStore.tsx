@@ -15,7 +15,7 @@ type CartStoreState = {
 }
 
 const useCartStore = create<CartStoreState>()(
-  devtools((set, get) => ({
+  devtools((set,) => ({
     cart: [],
 
     setCart: (items) => set({ cart: items }),
