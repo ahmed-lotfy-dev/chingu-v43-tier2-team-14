@@ -1,3 +1,4 @@
+import { motion } from "motion/react"
 import { Link } from "react-router"
 
 interface Book {
@@ -18,7 +19,7 @@ const FeaturedList = ({ list }: FeaturedListProps) => {
 
   return (
     <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-6 justify-items-center">
-      {books?.map((book: Book) => {
+      {books?.map((book: Book, index) => {
         const {
           title,
           book_image,
@@ -28,7 +29,14 @@ const FeaturedList = ({ list }: FeaturedListProps) => {
         } = book
         const bookId = primary_isbn13 || isbns?.[0]?.isbn13
         return (
-          <article
+          <motion.article
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{
+              duration: 0.5,
+              ease: "easeOut",
+              delay: index * 0.05,
+            }}
             key={id}
             className="flex flex-col items-center p-4 border border-slate-300 rounded-md shadow-md bg-white"
           >
@@ -45,7 +53,7 @@ const FeaturedList = ({ list }: FeaturedListProps) => {
                 />
               </figure>
             </Link>
-          </article>
+          </motion.article>
         )
       })}
     </div>

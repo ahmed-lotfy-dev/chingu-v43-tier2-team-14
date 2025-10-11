@@ -51,6 +51,8 @@ const book = pgTable("book", {
     title: text("title").notNull(),
     description: text("description"),
     pageCount: text("page_count"),
+    coverUrl: text("cover_url"),
+    authors: text("authors"),
     userId: text("user_id")
         .notNull()
         .references(() => user.id, { onDelete: "cascade" }),
@@ -62,10 +64,10 @@ const userBook = pgTable("user_book", {
     userId: text("user_id")
         .notNull()
         .references(() => user.id, { onDelete: "cascade" }),
-    bookId: uuid("book_id")
+    bookId: text("book_id")
         .notNull()
         .references(() => book.id, { onDelete: "cascade" }),
-    status: text("status").notNull(), // "wishlist", "reading", "finished", "want_to_buy"
+    status: text("status").notNull().default("wishlist"), // "wishlist", "reading", "finished", "want_to_buy"
     isFavorite: boolean("is_favorite").notNull().default(false),
     readProgress: text("read_progress"), // percentage or page
     createdAt: timestamp("created_at").notNull().defaultNow(),

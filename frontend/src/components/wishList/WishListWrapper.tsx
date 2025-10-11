@@ -5,19 +5,31 @@ import { useQuery } from "@tanstack/react-query"
 import useAuth from "../../hooks/useAuth"
 import { getUserWishList } from "../../utils/api/userWishListApi"
 import type { GoogleBook } from "../../types/googleBookType"
+import Loginbtn from "../user/LoginBtn"
 
 const WishListWrapper = () => {
   const { user } = useAuth()
   const { data: userWishList } = useQuery({
     queryKey: ["userWishList", user?.id],
     queryFn: () => getUserWishList(user?.id as string),
-    enabled: !!user?.id,
   })
   console.log(userWishList)
+  if (!user) {
+    return (
+      <div className="w-full flex flex-col items-center justify-center py-20 space-y-6 text-center">
+        <h2 className="text-3xl font-semibold">You're not logged in</h2>
+        <p className="text-gray-600">
+          Please log in if you want to view or track books.
+        </p>
+        <Loginbtn />
+      </div>
+    )
+  }
+
   return (
     userWishList && (
       <div className="w-full h-full flex flex-col justify-center items-center my-12">
-        <h2 className="text-4xl capitalize font-bold ">wishlist</h2>
+        <h2 className="text-4xl capitalize font-bold">wishlist</h2>
         <p>You have {userWishList.length} items in your list!</p>
         {userWishList.length > 0 ? (
           userWishList.map((wishItem: GoogleBook) => (
@@ -35,4 +47,5 @@ const WishListWrapper = () => {
     )
   )
 }
+
 export default WishListWrapper

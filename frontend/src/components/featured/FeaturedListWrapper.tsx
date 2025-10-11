@@ -33,20 +33,6 @@ const FeaturedBookWrapper = () => {
   }
   return (
     <div className="wrapper">
-      <h2 className="font-semibold text-center">
-        Best Sellers Books For &nbsp;
-        {featuredBooks.bestsellers_date
-          ? new Date(featuredBooks.bestsellers_date).toLocaleDateString(
-              "en-us",
-              {
-                weekday: "long",
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              }
-            )
-          : "Unknown Date"}
-      </h2>
       {featuredBooks.lists.map((list: FeaturedListType) => {
         return (
           <div key={list.list_name} className="flex flex-col justify-center">

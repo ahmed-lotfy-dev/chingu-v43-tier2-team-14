@@ -1,48 +1,53 @@
+import { create } from "zustand"
+import { devtools } from "zustand/middleware"
+import axios from "axios"
 
-// type CartStoreState = {
-//   cart: any[]
-//   // getBooks: () => Promise<void>
-// }
+import type { GoogleBook } from "../types/googleBookType"
 
-// const store = (): CartStoreState => ({
-//   cart: [],
-// })
-//   // addItemToCartState: (item: any) =>
-//   //   set((state) => {
-//   //     const cartItemExist = state.cart.some(
-//   //       (cartItem) => cartItem.id === item.id
-//   //     )
-//   //     if (!cartItemExist) {
-//   //       return {
-//   //         cart: [...state.cart, item],
-//   //       }
-//   //     }
-//   //     return state
-//   //   }),
+type CartStoreState = {
+  cart: GoogleBook[]
+  addItemToCartState: (item: GoogleBook) => void
+  removeItemFromCartState: (itemId: string) => void
+  syncAddToCart: (userId: string, item: GoogleBook) => Promise<void>
+  syncRemoveFromCart: (userId: string, itemId: string) => Promise<void>
+  setCart: (items: GoogleBook[]) => void
+  clearCart: () => void
+}
 
-//   // removeItemFromCartState: async (item) => {
-//   //   set((state) => {
-//   //     return { ...state.cart, item }
-//   //   })
-//   // },
+const useCartStore = create<CartStoreState>()(
+  devtools((set, get) => ({
+    cart: [],
 
-//   // addCartDB: async function (userId, item) {
-//   //   const response = await axios.post(
-//   //     `/api/cart/add-item-to-cart`,
-//   //     { userId: userId, item }
-//   //   );
-//   //   set((state) => ({ ...state.cart, response }));
-//   // },
+    setCart: (items) => set({ cart: items }),
 
-//   // removeCartDB: async (userId) => {
-//   //   const response = await axios.post(
-//   //     `/api/cart/remove-item-from-cart`,
-//   //     {
-//   //       userId: userId,
-//   //     }
-//   //   );
-//   //   set({ response });
-//   // },
+    clearCart: () => set({ cart: [] }),
 
+    addItemToCartState: (item) =>
+      set((state) => {
+        const exists = state.cart.some((i) => i.id === item.id)
+        if (!exists) {
+          return { cart: [...state.cart, item] }
+        }
+        return state
+      }),
 
-// export const cartStore = create(devtools(store))
+    removeItemFromCartState: (itemId) =>
+      set((state) => ({
+        cart: state.cart.filter((item) => item.id !== itemId),
+      })),
+
+    syncRemoveFromCart: async (userId, itemId) => {
+      try {
+        await axios.post("/api/cart/remove-item-from-cart", {
+          userId,
+          itemId,
+        })
+      } catch (err) {
+        console.error("Failed to sync remove from cart", err)
+        // Optional: rollback logic
+      }
+    },
+  }))
+)
+
+export default useCartStore

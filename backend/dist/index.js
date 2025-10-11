@@ -5,7 +5,7 @@ import swaggerjsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./utils/auth.js";
-import { PORT } from "./utils/secrets.js";
+import { PORT, APP_HOME } from "./utils/secrets.js";
 import userRouter from "./routes/user.js";
 import booksRouter from "./routes/books.js";
 import cartRouter from "./routes/cart.js";
@@ -14,7 +14,7 @@ import { authMiddleware } from "./utils/authMiddleware.js";
 const app = express();
 const port = PORT || 4000;
 app.use(cors({
-    origin: process.env.APP_HOME,
+    origin: APP_HOME,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
 }));
