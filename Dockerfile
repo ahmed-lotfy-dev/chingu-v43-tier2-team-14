@@ -8,7 +8,7 @@ WORKDIR /frontend
 COPY ./frontend/package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --no-package-lock --no-audit --no-fund
 
 # Copy all other frontend files (including index.html and src directory)
 COPY ./frontend .
@@ -26,7 +26,7 @@ WORKDIR /backend
 COPY ./backend/package*.json ./
 
 # Install backend dependencies
-RUN npm install
+RUN npm install --no-package-lock --no-audit --no-fund
 
 # Copy backend source files
 COPY ./backend ./
