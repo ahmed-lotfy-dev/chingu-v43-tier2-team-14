@@ -31,6 +31,9 @@ RUN npm install
 # Copy backend source files
 COPY ./backend ./
 
+# Compile TypeScript -> dist (PM2 runs node dist/index.js)
+RUN npm run build
+
 # Step 3: Combine Frontend and Backend and Setup PM2
 FROM node:20-alpine
 

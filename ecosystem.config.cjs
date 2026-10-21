@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: "backend", // Name of the backend process
-      script: "node ./index.js", // Path to your backend entry file
+      script: "node dist/index.js", // compiled backend entry (src TypeScript -> dist by the backend build stage)
       cwd: "./backend", // Backend working directory
       env: {
         NODE_ENV: "production",
