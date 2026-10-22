@@ -8,14 +8,13 @@ type CartStoreState = {
   cart: GoogleBook[]
   addItemToCartState: (item: GoogleBook) => void
   removeItemFromCartState: (itemId: string) => void
-  syncAddToCart: (userId: string, item: GoogleBook) => Promise<void>
   syncRemoveFromCart: (userId: string, itemId: string) => Promise<void>
   setCart: (items: GoogleBook[]) => void
   clearCart: () => void
 }
 
-const useCartStore = create<CartStoreState>()(
-  devtools((set,) => ({
+const useCartStore = create<CartStoreState, [['zustand/devtools', never]]>(
+  devtools((set) => ({
     cart: [],
 
     setCart: (items) => set({ cart: items }),
