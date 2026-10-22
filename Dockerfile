@@ -1,5 +1,5 @@
 # Step 1: Install and Build Frontend
-FROM node:20-alpine AS frontend-build
+FROM node:22-alpine AS frontend-build
 
 # Set working directory
 WORKDIR /frontend
@@ -17,7 +17,7 @@ COPY ./frontend .
 RUN npm run build
 
 # Step 2: Install Backend
-FROM node:20-alpine AS backend-build
+FROM node:22-alpine AS backend-build
 
 # Set working directory
 WORKDIR /backend
@@ -35,7 +35,7 @@ COPY ./backend ./
 RUN npm run build
 
 # Step 3: Combine Frontend and Backend and Setup PM2
-FROM node:20-alpine
+FROM node:22-alpine
 
 # Install PM2 globally
 RUN npm install -g pm2
