@@ -104,7 +104,9 @@ booksRouter.get(
   async (req: Request, res: Response): Promise<any> => {
     try {
       const { query } = req.params
-      
+
+      const searchQuery = Array.isArray(query) ? (query[0] ?? "") : String(query ?? "")
+
       const url = GOOGLE_BOOKAPI_URL
       const apiKey = GOOGLE_BOOKAPI
       if (!apiKey) {
@@ -114,7 +116,7 @@ booksRouter.get(
       }
 
       const params = new URLSearchParams({
-        q: query,
+        q: searchQuery,
         key: apiKey,
         maxResults: "40", // Increased results for better search experience
       })

@@ -78,6 +78,7 @@ booksRouter.get("/featured", async (req, res) => {
 booksRouter.get("/search/:query", async (req, res) => {
     try {
         const { query } = req.params;
+        const searchQuery = Array.isArray(query) ? (query[0] ?? "") : String(query ?? "");
         const url = GOOGLE_BOOKAPI_URL;
         const apiKey = GOOGLE_BOOKAPI;
         if (!apiKey) {
@@ -86,7 +87,7 @@ booksRouter.get("/search/:query", async (req, res) => {
                 .json({ message: "Missing Google Books API key." });
         }
         const params = new URLSearchParams({
-            q: query,
+            q: searchQuery,
             key: apiKey,
             maxResults: "40", // Increased results for better search experience
         });
